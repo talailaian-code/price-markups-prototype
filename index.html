@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Markups — Instacart Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green-dark:#003D29;
+  --green-mid:#0A5546;
+  --green-light:#ECF6F3;
+  --green-xlight:#F5FBF9;
+  --red:#C0392B;
+  --red-light:#FDEDEC;
+  --orange:#E67E22;
+  --orange-light:#FEF9EF;
+  --blue:#2980B9;
+  --blue-light:#EAF4FB;
+  --text:#242529;
+  --text-2:#56595E;
+  --text-3:#9EA0A5;
+  --border:#E8E9EB;
+  --border-2:#C7C8CD;
+  --bg:#F5F5F7;
+  --surface:#FFFFFF;
+  --shadow:0 2px 8px rgba(0,0,0,0.1);
+  --shadow-lg:0 4px 24px rgba(0,0,0,0.14);
+  --radius:8px;
+  --nav-h:48px;
+  --sidebar-w:200px;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* ── TOP NAV ── */
+.top-nav{height:var(--nav-h);background:var(--green-dark);display:flex;align-items:center;padding:0 8px 0 16px;position:sticky;top:0;z-index:200;flex-shrink:0}
+.top-nav__logo{display:flex;align-items:center;gap:6px;margin-right:20px;text-decoration:none}
+.top-nav__logo-mark{width:22px;height:22px;background:#00B140;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.top-nav__logo-mark svg{width:14px;height:14px;fill:white}
+.top-nav__logo-text{color:white;font-size:13px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+.top-nav__tabs{display:flex;align-items:stretch;height:var(--nav-h);flex:1}
+.top-nav__tab{background:none;border:none;color:rgba(255,255,255,.75);font-family:inherit;font-size:12px;font-weight:600;padding:0 14px;cursor:pointer;height:100%;display:flex;align-items:center;border-bottom:2px solid transparent;transition:background .15s,color .15s}
+.top-nav__tab:hover{background:var(--green-mid);color:white}
+.top-nav__tab.active{color:white;border-bottom-color:white}
+.top-nav__right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.top-nav__icon{background:none;border:none;width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.8);transition:background .15s}
+.top-nav__icon:hover{background:var(--green-mid)}
+.top-nav__user{background:none;border:none;display:flex;align-items:center;gap:6px;color:white;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;transition:background .15s}
+.top-nav__user:hover{background:var(--green-mid)}
+.top-nav__avatar{width:22px;height:22px;background:#00B140;border-radius:4px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - var(--nav-h))}
+.sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);flex-shrink:0;padding-top:20px}
+.sidebar__section-header{display:flex;align-items:center;gap:8px;padding:0 16px 8px 20px}
+.sidebar__section-icon{width:24px;height:24px;color:var(--text-2)}
+.sidebar__section-title{font-size:15px;font-weight:700;color:var(--text)}
+.sidebar__group-label{font-size:12px;color:var(--text-2);padding:12px 16px 4px 20px}
+.sidebar__item{display:block;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;padding:8px 16px 8px 17px;font-family:inherit;font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer;transition:background .1s}
+.sidebar__item:hover{background:var(--green-xlight);color:var(--green-mid)}
+.sidebar__item.active{background:var(--green-xlight);border-left-color:var(--green-mid);color:var(--green-mid);font-weight:600}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--surface)}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:20px 32px 0;border-bottom:1px solid var(--border)}
+.page-header__top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.page-header__title{font-size:22px;font-weight:700;color:var(--text)}
+.page-header__actions{display:flex;gap:8px;align-items:center}
+.page-header__tabs{display:flex;gap:0}
+.page-header__tab{background:none;border:none;border-bottom:2px solid transparent;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;margin-bottom:-1px;transition:color .15s}
+.page-header__tab:hover{color:var(--text)}
+.page-header__tab.active{color:var(--green-mid);border-bottom-color:var(--green-mid)}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;gap:10px;padding:14px 32px;border-bottom:1px solid var(--border)}
+
+/* ── TABLE ── */
+.table-wrap{padding:0 32px 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:0}
+th{text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap;background:#FAFAFA}
+td{padding:12px 12px;border-bottom:1px solid #F0F1F2;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--green-xlight);cursor:pointer}
+.sort-icon{display:inline-flex;vertical-align:middle;margin-left:3px;opacity:.5}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:background .15s,opacity .15s;white-space:nowrap}
+.btn-primary{background:var(--green-mid);color:white}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-secondary{background:white;color:var(--green-mid);border:1.5px solid var(--green-mid)}
+.btn-secondary:hover{background:var(--green-xlight)}
+.btn-danger{background:#C0392B;color:white}
+.btn-danger:hover{background:#A93226}
+.btn-ghost{background:none;border:none;color:var(--green-mid);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:0}
+.btn-ghost:hover{text-decoration:underline}
+.btn-icon{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:background .15s;color:var(--text-2)}
+.btn-icon:hover{background:var(--bg);color:var(--text)}
+.btn-icon-dots{background:none;border:none;cursor:pointer;width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:background .15s}
+.btn-icon-dots:hover{background:var(--border)}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.badge-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.badge-active{background:#DCFCE7;color:#166534}.badge-active .badge-dot{background:#22C55E}
+.badge-inactive{background:var(--bg);color:var(--text-2)}.badge-inactive .badge-dot{background:var(--text-3)}
+.badge-pending{background:#FEF9C3;color:#854D0E}.badge-pending .badge-dot{background:#EAB308}
+.badge-review{background:var(--blue-light);color:#1E40AF}.badge-review .badge-dot{background:#3B82F6}
+.badge-new{background:#EDE9FE;color:#5B21B6}.badge-new .badge-dot{background:#7C3AED}
+
+/* ── SEARCH / SELECT ── */
+.input{height:36px;border:1px solid var(--border-2);border-radius:var(--radius);padding:0 12px;font-family:inherit;font-size:13px;color:var(--text);background:white;outline:none;transition:border-color .14s}
+.input:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(10,85,70,.12)}
+.input::placeholder{color:var(--text-3)}
+.search-wrap{position:relative;display:inline-flex;align-items:center}
+.search-wrap svg{position:absolute;left:10px;color:var(--text-3);pointer-events:none}
+.search-wrap .input{padding-left:32px;width:200px}
+select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%2356595E' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+
+/* ── DROPDOWN MENU ── */
+.menu-wrap{position:relative;display:inline-block}
+.menu{position:absolute;right:0;top:calc(100% + 4px);background:white;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;z-index:300;padding:4px 0;animation:fadeIn .12s ease}
+.menu-item{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:inherit;font-size:13px;color:var(--text);cursor:pointer;transition:background .1s}
+.menu-item:hover{background:var(--bg)}
+.menu-item.danger{color:var(--red)}
+.menu-sep{height:1px;background:var(--border);margin:4px 0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;gap:8px;padding:12px 32px;border-top:1px solid var(--border);font-size:12px;color:var(--text-2)}
+.pagination-count{margin-left:auto}
+
+/* ── EMPTY STATE ── */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px;text-align:center;gap:12px}
+.empty-icon{width:56px;height:56px;opacity:.3}
+.empty-title{font-size:15px;font-weight:600;color:var(--text)}
+.empty-desc{font-size:13px;color:var(--text-2);max-width:340px;line-height:1.5}
+
+/* ── FORM PAGE ── */
+.form-page{padding:24px 40px;max-width:720px}
+.form-back{display:inline-flex;align-items:center;gap:4px;color:var(--green-mid);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:inherit}
+.form-back:hover{text-decoration:underline}
+.form-page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.form-page-title{font-size:22px;font-weight:700}
+.form-field{margin-bottom:16px}
+.form-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.form-label-optional{font-size:12px;font-weight:400;color:var(--text-2)}
+.form-input{width:100%;height:40px;border:1px solid var(--border-2);border-radius:var(--radius);padding:0 12px;font-family:inherit;font-size:14px;color:var(--text);outline:none;transition:border-color .14s}
+.form-input:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(10,85,70,.12)}
+.form-input::placeholder{color:var(--text-3)}
+.form-section{margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}
+.form-section-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.form-section-desc{font-size:13px;color:var(--text-2);line-height:1.5;margin-bottom:16px}
+.alert-banner{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--radius);background:var(--red-light);border:1px solid #F5C6CB;color:#922B21;font-size:13px;margin-bottom:16px}
+
+/* ── RULES TABLE (in form) ── */
+.rules-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.rules-table th{background:#FAFAFA;padding:8px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left}
+.rules-table td{padding:10px 12px;border-bottom:1px solid #F0F1F2;font-size:13px}
+.rules-table tr:last-child td{border-bottom:none}
+.rules-table__actions{display:flex;gap:4px;align-items:center}
+
+/* ── DETAIL / REVIEW PAGE ── */
+.detail-header{padding:20px 32px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.detail-back{display:inline-flex;align-items:center;gap:4px;color:var(--green-mid);font-size:12px;font-weight:600;cursor:pointer;margin-bottom:6px;background:none;border:none;font-family:inherit}
+.detail-back:hover{text-decoration:underline}
+.detail-title-row{display:flex;align-items:center;gap:10px}
+.detail-title{font-size:20px;font-weight:700}
+.detail-meta{font-size:12px;color:var(--text-2);margin-top:4px}
+.detail-actions{display:flex;gap:8px;flex-shrink:0}
+.detail-content{padding:24px 32px}
+.detail-section{margin-bottom:24px}
+.detail-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);margin-bottom:12px}
+.rule-change-card{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.rule-change-card-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#FAFAFA;border-bottom:1px solid var(--border)}
+.rule-change-card-title{font-size:13px;font-weight:600}
+.change-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.tag-unchanged{background:#F0F1F2;color:var(--text-2)}
+.tag-edited{background:#FEF3C7;color:#92400E}
+.tag-new{background:#D1FAE5;color:#065F46}
+.tag-removed{background:#FEE2E2;color:#991B1B}
+.rule-change-table{width:100%;border-collapse:collapse}
+.rule-change-table th{font-size:11px;font-weight:600;color:var(--text-2);padding:6px 14px;border-bottom:1px solid var(--border);background:#FAFAFA;text-align:left}
+.rule-change-table td{padding:8px 14px;font-size:13px;border-bottom:1px solid #F0F1F2}
+.rule-change-table tr:last-child td{border-bottom:none}
+.changed{background:#FEF3C7;font-weight:600}
+
+/* ── DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:400;display:none;animation:overlayIn .2s ease}
+.drawer-overlay.open{display:block}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:400px;background:white;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.drawer.open{transform:translateX(0)}
+.drawer-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.drawer-title{font-size:15px;font-weight:700;line-height:1.3}
+.drawer-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-2)}
+.drawer-close:hover{background:var(--bg)}
+.drawer-body{flex:1;overflow-y:auto;padding:20px}
+.drawer-section{margin-bottom:20px}
+.drawer-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);margin-bottom:12px}
+.drawer-field{margin-bottom:14px}
+.drawer-field-label{font-size:12px;color:var(--text-2);margin-bottom:3px}
+.drawer-field-value{font-size:14px;font-weight:500;color:var(--text)}
+.drawer-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:none;align-items:center;justify-content:center;animation:overlayIn .15s ease}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:var(--radius);box-shadow:var(--shadow-lg);width:420px;max-width:90vw;animation:modalIn .15s ease}
+.modal-header{padding:20px 20px 16px;display:flex;align-items:flex-start;justify-content:space-between}
+.modal-title{font-size:17px;font-weight:700}
+.modal-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2)}
+.modal-close:hover{background:var(--bg)}
+.modal-body{padding:0 20px 16px;font-size:14px;color:var(--text-2);line-height:1.5;border-top:1px solid var(--border);padding-top:16px}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 20px;border-top:1px solid var(--border)}
+@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+
+/* ── MULTI-STEP FORM PAGE ── */
+.mform{display:flex;flex-direction:column;height:100%}
+.mform-header{padding:20px 32px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mform-title{font-size:20px;font-weight:700}
+.mform-actions{display:flex;gap:10px}
+.mform-body{display:flex;flex:1;overflow:hidden}
+.mform-steps{width:220px;border-right:1px solid var(--border);padding:24px 0;flex-shrink:0}
+.mform-step{display:flex;align-items:flex-start;gap:10px;padding:10px 20px;cursor:pointer;transition:background .1s}
+.mform-step:hover{background:var(--bg)}
+.mform-step.active{background:var(--green-xlight)}
+.mform-step-num{width:22px;height:22px;border-radius:50%;border:2px solid var(--border-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-2);flex-shrink:0}
+.mform-step.active .mform-step-num{background:var(--green-mid);border-color:var(--green-mid);color:white}
+.mform-step.done .mform-step-num{background:var(--green-xlight);border-color:var(--green-mid);color:var(--green-mid)}
+.mform-step-label{font-size:13px;font-weight:600;color:var(--text-2);line-height:1.3}
+.mform-step.active .mform-step-label{color:var(--green-mid)}
+.mform-step.done .mform-step-label{color:var(--text)}
+.mform-content{flex:1;overflow-y:auto;padding:28px 32px}
+
+/* ── REVIEW PRICE TABLE ── */
+.price-review-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.price-review-table th{background:#FAFAFA;padding:8px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left}
+.price-review-table td{padding:9px 12px;font-size:13px;border-bottom:1px solid #F0F1F2}
+.price-review-table tr:last-child td{border-bottom:none}
+.price-highlight{font-weight:700;color:var(--green-mid)}
+.rows-per-page{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)}
+
+/* ── NOTIFICATION BANNER ── */
+.notif{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;margin:0 32px 0;border-radius:var(--radius);font-size:13px;margin-top:16px}
+.notif-error{background:var(--red-light);border:1px solid #F5C6CB;color:#922B21}
+.notif-success{background:#D1FAE5;border:1px solid #A7F3D0;color:#065F46}
+
+/* ── SCREEN VISIBILITY ── */
+.screen{display:none;flex:1;flex-direction:column;min-height:0;overflow-y:auto}
+.screen.active{display:flex}
+
+/* ── INLINE TAG (New rule, etc.) ── */
+.tag-pill{display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700}
+.tag-pill-new{background:#EDE9FE;color:#5B21B6}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a class="top-nav__logo" href="#" onclick="return false">
+    <div class="top-nav__logo-mark">
+      <svg viewBox="0 0 20 20"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 3.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 9c-2.03 0-3.8-1.04-4.85-2.6.02-1.61 3.23-2.5 4.85-2.5 1.61 0 4.83.89 4.85 2.5C13.8 13.46 12.03 14.5 10 14.5z"/></svg>
+    </div>
+    <span class="top-nav__logo-text">instacart platform</span>
+  </a>
+  <div class="top-nav__tabs">
+    <button class="top-nav__tab">Analytics</button>
+    <button class="top-nav__tab">Catalog</button>
+    <button class="top-nav__tab active">Merchandising</button>
+    <button class="top-nav__tab">Marketing</button>
+    <button class="top-nav__tab">Operations</button>
+  </div>
+  <div class="top-nav__right">
+    <button class="top-nav__icon" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button class="top-nav__user">
+      <div class="top-nav__avatar">IA</div>
+      Instacart Admin
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar__section-header">
+      <svg class="sidebar__section-icon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="sidebar__section-title">Merchandising</span>
+    </div>
+    <div class="sidebar__group-label">Promotions</div>
+    <button class="sidebar__item" onclick="nav('active-rules')">Campaigns &amp; offers</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Segments</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Promotional banners</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Creatives</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Slot manager</button>
+    <div class="sidebar__group-label">Pricing</div>
+    <button class="sidebar__item active" id="sb-price-markups" onclick="nav('active-rules')">Price markups</button>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="main" id="main-content">
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: ACTIVE RULES (empty)
+    ════════════════════════════════════════════════ -->
+    <div class="screen active" id="screen-active-rules">
+      <div class="page-header">
+        <div class="page-header__top">
+          <h1 class="page-header__title">Price markups</h1>
+          <div class="page-header__actions">
+            <button class="btn-icon" title="More options">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
+            </button>
+            <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
+          </div>
+        </div>
+        <div class="page-header__tabs">
+          <button class="page-header__tab active" onclick="nav('active-rules')">Active rules</button>
+          <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
+          <button class="page-header__tab" onclick="nav('groups')">Groups</button>
+          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <!-- column headers still show even with empty state -->
+      </div>
+      <div style="overflow-x:auto;padding:0 32px">
+        <table>
+          <thead><tr>
+            <th>Rule name <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
+            <th>Storefront</th><th>Stores</th><th>Memberships</th><th>Products</th>
+            <th>Target markup <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
+            <th>Actual mark</th>
+          </tr></thead>
+        </table>
+      </div>
+      <div class="empty">
+        <svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="14" width="40" height="30" rx="3" stroke="#343538" stroke-width="2"/><path d="M16 22h24M16 28h16M16 34h10" stroke="#343538" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="empty-title">No active markup rules to show</div>
+        <div class="empty-desc">Active markup rules will appear here after they've been approved by [Partner]. To add rules, create a change request.</div>
+        <button class="btn btn-secondary" onclick="nav('create-request')">Create change request</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: CHANGE REQUESTS LIST
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-change-requests">
+      <div class="page-header">
+        <div class="page-header__top">
+          <h1 class="page-header__title">Price markups</h1>
+          <div class="page-header__actions">
+            <button class="btn-icon" title="More options">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
+            </button>
+            <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
+          </div>
+        </div>
+        <div class="page-header__tabs">
+          <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
+          <button class="page-header__tab active" onclick="nav('change-requests')">Change requests</button>
+          <button class="page-header__tab" onclick="nav('groups')">Groups</button>
+          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="search-wrap">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input class="input" placeholder="Search" id="cr-search" oninput="filterRequests()">
+        </div>
+        <select class="input" id="cr-status" onchange="filterRequests()" style="width:140px">
+          <option value="">Status: All</option>
+          <option value="Account review">Account review</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table id="cr-table">
+          <thead><tr>
+            <th>Change request <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
+            <th>Description</th><th>Status</th><th>Last updated</th><th>Last updated by</th>
+            <th>Rules modified <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
+            <th></th>
+          </tr></thead>
+          <tbody id="cr-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <div class="rows-per-page">Rows per page <select class="input" style="height:28px;width:60px;font-size:12px"><option>15</option><option>30</option><option>50</option></select></div>
+        <div class="pagination-count" id="cr-pagination">1 – 2 of 2 change requests</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: CREATE CHANGE REQUEST
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-create-request">
+      <div class="form-page">
+        <button class="form-back" onclick="nav('change-requests')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Price markups
+        </button>
+        <div class="form-page-header">
+          <h1 class="form-page-title">Create a change request</h1>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-secondary" onclick="openModal('cancel-modal')">Cancel</button>
+            <button class="btn btn-primary" onclick="submitRequest()">Submit change request</button>
+          </div>
+        </div>
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:16px">Change request details</div>
+        <div class="form-field">
+          <div class="form-label">Change request name</div>
+          <input class="form-input" placeholder="Change request name" id="new-req-name" value="First project">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Description</div>
+          <input class="form-input" placeholder="Description" id="new-req-desc" value="This project is our beginning">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Start date <span class="form-label-optional">(optional)</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#9EA0A5" stroke-width="1.2"/><path d="M8 7v4" stroke="#9EA0A5" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="#9EA0A5"/></svg>
+          </div>
+          <input class="form-input" type="date" id="new-req-date" style="width:200px">
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Markup rules</div>
+          <div class="form-section-desc">Add, edit, or delete rules in this change request. Markups are tested on current prices and won't take effect until they're approved by [Partner].</div>
+          <div class="alert-banner">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14.93 14H1.07L8 2z" stroke="#C0392B" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 7v3" stroke="#C0392B" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="12" r=".7" fill="#C0392B"/></svg>
+            Make a change to submit this request.
+          </div>
+          <table class="rules-table" id="rules-table">
+            <thead><tr>
+              <th>Rule name</th><th>Stores</th><th>Membership</th><th>Products</th><th>Target markup</th><th>Price range</th><th></th>
+            </tr></thead>
+            <tbody id="rules-tbody">
+              <tr>
+                <td><button class="btn-ghost" onclick="openDrawer('Rule A','Store A','All','All','3%','None','0%','8%','$0','$8')">Rule A</button></td>
+                <td>Store A</td><td>All</td><td>All</td><td>3%</td><td>None</td>
+                <td class="rules-table__actions">
+                  <button class="btn-icon" title="Edit">✏️</button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
+                  <button class="btn-icon" title="Copy">📋</button>
+                </td>
+              </tr>
+              <tr>
+                <td><button class="btn-ghost" onclick="openDrawer('Rule B','Instacart+','All','All','0%','$3–$6','0%','0%','$3','$6')">Rule B</button></td>
+                <td>Store B</td><td>Instacart +</td><td>All</td><td>0%</td><td>$3–$6</td>
+                <td class="rules-table__actions">
+                  <button class="btn-icon" title="Edit">✏️</button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
+                  <button class="btn-icon" title="Copy">📋</button>
+                </td>
+              </tr>
+              <tr>
+                <td><button class="btn-ghost" onclick="openDrawer('Link 1','All','Loyalty','All','0%','None','0%','0%','$0','$0')">Link 1</button></td>
+                <td>All</td><td>Loyalty</td><td>All</td><td>0%</td><td>None</td>
+                <td class="rules-table__actions">
+                  <button class="btn-icon" title="Edit">✏️</button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
+                  <button class="btn-icon" title="Copy">📋</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:10px">
+            <button class="btn btn-secondary" onclick="addRule()" style="font-size:12px;padding:6px 12px">+ Add rule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: REVIEW CHANGE REQUEST (detail)
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-review-request">
+      <div class="detail-header">
+        <div>
+          <button class="detail-back" onclick="nav('change-requests')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Change requests
+          </button>
+          <div class="detail-title-row">
+            <h1 class="detail-title" id="review-title">First project</h1>
+            <span class="badge badge-pending"><span class="badge-dot"></span>Inactive</span>
+          </div>
+          <div class="detail-meta" id="review-meta">Reviewed/Rejected by Tala Ilaian · Edited by Tala Ilaian on 03/08/2026</div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-secondary" id="review-reject-btn" onclick="rejectRequest()">Reject change request</button>
+          <button class="btn btn-primary" id="review-accept-btn" onclick="acceptRequest()">Accept change request</button>
+        </div>
+      </div>
+
+      <div id="review-notif" style="display:none"></div>
+
+      <div class="detail-content">
+        <a href="#" style="font-size:13px;color:var(--green-mid);font-weight:600;text-decoration:none" onclick="return false">View test results ↗</a>
+
+        <div class="detail-section" style="margin-top:20px">
+          <table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+            <thead><tr>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Rule name <span class="sort-icon">↕</span></th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Status</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Stores</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Membership</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Products</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Rule %</th>
+            </tr></thead>
+            <tbody>
+              <tr onclick="openDrawer('Rule A','All stores','All','All','3%','None','0%','8%','$0','$8')" style="cursor:pointer">
+                <td style="padding:11px 12px"><button class="btn-ghost">Rule A</button> <span class="tag-pill tag-pill-new">New rule</span></td>
+                <td style="padding:11px 12px"><span class="badge badge-new"><span class="badge-dot"></span>New rule</span></td>
+                <td style="padding:11px 12px">All stores</td>
+                <td style="padding:11px 12px">All</td>
+                <td style="padding:11px 12px">All</td>
+                <td style="padding:11px 12px">3%</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination" style="padding:10px 0">
+            <div class="rows-per-page">Items per page <select class="input" style="height:28px;width:55px;font-size:12px"><option>15</option></select></div>
+            <div class="pagination-count">1 – 15 of 150 items per page</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-left:12px">
+              <button class="btn-icon" style="height:28px;width:28px">‹</button>
+              <input class="input" value="1" style="width:40px;height:28px;font-size:12px;text-align:center">
+              <span style="font-size:12px;color:var(--text-2)">of 10 pages</span>
+              <button class="btn-icon" style="height:28px;width:28px">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: REVIEW RULE CHANGE REQUEST (multi-step)
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-review-rule-changes">
+      <div class="mform-header">
+        <h1 class="mform-title">Review rule change request</h1>
+        <div class="mform-actions">
+          <button class="btn btn-secondary" onclick="nav('change-requests')">Cancel</button>
+          <button class="btn btn-primary" onclick="nav('review-request')">Next</button>
+        </div>
+      </div>
+      <div class="mform-body">
+        <div class="mform-steps">
+          <div class="mform-step done">
+            <div class="mform-step-num">✓</div>
+            <div class="mform-step-label">Review rule changes<br><span style="font-size:11px;font-weight:400;color:var(--text-2)">Description</span></div>
+          </div>
+          <div class="mform-step active">
+            <div class="mform-step-num">2</div>
+            <div class="mform-step-label">Review price changes<br><span style="font-size:11px;font-weight:400;color:var(--text-2)">Description</span></div>
+          </div>
+          <div class="mform-step">
+            <div class="mform-step-num">3</div>
+            <div class="mform-step-label">Review<br><span style="font-size:11px;font-weight:400;color:var(--text-2)"></span></div>
+          </div>
+        </div>
+        <div class="mform-content">
+          <div style="font-size:16px;font-weight:700;margin-bottom:4px">Review price changes</div>
+          <div style="font-size:13px;color:var(--text-2);margin-bottom:20px;line-height:1.5">Lorem ipsum dolor sit amet. Rem galsum maxime ut delenit reciendis aut consequuntur delenti hic placeat apeniam non tenetur iste qui voluptas</div>
+          <table class="price-review-table">
+            <thead><tr>
+              <th>ID</th><th>Channel</th><th>Product ID</th><th>Store ID</th>
+              <th>Catalog price</th><th>Previous rule price</th><th>New rule price</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>1000</td><td>Marketplace</td><td>I23456789</td><td>100</td><td>$1.99</td><td>$2.19</td><td class="price-highlight">$1.99</td></tr>
+              <tr><td>1001</td><td>Marketplace</td><td>I23456789</td><td>110</td><td>$1.59</td><td>$1.99</td><td class="price-highlight">$1.99</td></tr>
+              <tr><td>1002</td><td>Marketplace</td><td>I23456789</td><td>110</td><td>$2.49</td><td>$2.99</td><td class="price-highlight">$2.99</td></tr>
+              <tr><td>1003</td><td>Marketplace</td><td>I23456789</td><td>110</td><td>$1.99</td><td>$2.99</td><td class="price-highlight">$2.49</td></tr>
+              <tr><td>1003</td><td>Marketplace</td><td>I23456789</td><td>110</td><td>$1.99</td><td>1.99</td><td class="price-highlight">$2.49</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: GROUPS
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-groups">
+      <div class="page-header">
+        <div class="page-header__top">
+          <h1 class="page-header__title">Price markups</h1>
+          <div class="page-header__actions">
+            <button class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
+            </button>
+            <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
+          </div>
+        </div>
+        <div class="page-header__tabs">
+          <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
+          <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
+          <button class="page-header__tab active" onclick="nav('groups')">Groups</button>
+          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
+        </div>
+      </div>
+      <div style="padding:24px 32px;display:flex;flex-direction:column;gap:32px">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div><div style="font-size:16px;font-weight:700">Product groups</div><div style="font-size:13px;color:var(--text-2)">Description</div></div>
+            <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px">Add product group</button>
+          </div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:12px">
+            <thead><tr>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Group name ↕</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Group type</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Description</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Last edited by</th>
+            </tr></thead>
+          </table>
+          <div class="empty" style="padding:40px"><svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="14" width="40" height="30" rx="3" stroke="#343538" stroke-width="2"/><path d="M16 22h24M16 28h16M16 34h10" stroke="#343538" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="empty-title">No groups to show</div>
+            <div class="empty-desc">When you create groups of stores or products, they'll appear here.</div>
+            <button class="btn btn-secondary" style="font-size:13px">Create group</button>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div><div style="font-size:16px;font-weight:700">Store groups</div><div style="font-size:13px;color:var(--text-2)">Description</div></div>
+            <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px">Add store group</button>
+          </div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:12px">
+            <thead><tr>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Group name ↕</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Group type</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Description</th>
+              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Last edited by</th>
+            </tr></thead>
+          </table>
+          <div class="empty" style="padding:40px"><svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="14" width="40" height="30" rx="3" stroke="#343538" stroke-width="2"/><path d="M16 22h24M16 28h16M16 34h10" stroke="#343538" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="empty-title">No groups to show</div>
+            <div class="empty-desc">When you create groups of stores or products, they'll appear here.</div>
+            <button class="btn btn-secondary" style="font-size:13px">Create group</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SCREEN: ANALYTICS (placeholder)
+    ════════════════════════════════════════════════ -->
+    <div class="screen" id="screen-analytics">
+      <div class="page-header">
+        <div class="page-header__top">
+          <h1 class="page-header__title">Price markups</h1>
+          <div class="page-header__actions">
+            <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
+          </div>
+        </div>
+        <div class="page-header__tabs">
+          <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
+          <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
+          <button class="page-header__tab" onclick="nav('groups')">Groups</button>
+          <button class="page-header__tab active" onclick="nav('analytics')">Analytics</button>
+        </div>
+      </div>
+      <div class="empty" style="padding:80px">
+        <svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="30" width="8" height="16" rx="1" stroke="#343538" stroke-width="2"/><rect x="24" y="20" width="8" height="26" rx="1" stroke="#343538" stroke-width="2"/><rect x="40" y="12" width="8" height="34" rx="1" stroke="#343538" stroke-width="2"/></svg>
+        <div class="empty-title">Analytics coming soon</div>
+        <div class="empty-desc">Analytics data will appear here once markup rules are active.</div>
+      </div>
+    </div>
+
+  </main><!-- /main -->
+</div><!-- /layout -->
+
+<!-- ══════════════════════════════════════════════
+     DRAWER: Rule details
+════════════════════════════════════════════════ -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-title" id="drawer-title">Flat 10% markup on delivery for loyalty on marketplace</div>
+    <button class="drawer-close" onclick="closeDrawer()">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section">
+      <div class="drawer-section-title">Rule details</div>
+      <div class="drawer-field"><div class="drawer-field-label">Storefront</div><div class="drawer-field-value" id="d-storefront">Marketplace</div></div>
+      <div class="drawer-field"><div class="drawer-field-label">Stores</div><div class="drawer-field-value" id="d-stores">All stores</div></div>
+      <div class="drawer-field"><div class="drawer-field-label">Memberships
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+      </div><div class="drawer-field-value" id="d-membership">Loyalty</div></div>
+      <div class="drawer-field"><div class="drawer-field-label">Products
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+      </div><div class="drawer-field-value" id="d-products">All products</div></div>
+      <div class="drawer-field"><div class="drawer-field-label">Service type
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+      </div><div class="drawer-field-value">Delivery</div></div>
+    </div>
+    <div class="drawer-section" style="border-top:1px solid var(--border);padding-top:20px">
+      <div class="drawer-section-title">Rule settings</div>
+      <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.5">Set the target markup and the rounding to apply to it. Markup limits per-product help control the final shelf price.</div>
+      <div class="drawer-field"><div class="drawer-field-label">Target markup</div><div class="drawer-field-value" id="d-target">% 10</div></div>
+      <div class="drawer-field"><div class="drawer-field-label">Rounding preference
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+      </div><div class="drawer-field-value">Prioritize rounding to $0.99 <span style="font-size:11px;color:var(--text-2)">(recommended)</span></div></div>
+      <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.5">Prioritizes rounding to the nearest higher price ending in $0.99, then the lower price, after applying the markup.</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px">Limits on markups per-product</div>
+      <div class="drawer-row">
+        <div class="drawer-field"><div class="drawer-field-label">Min – Max markup (%)</div><div class="drawer-field-value" id="d-min-pct">% <span id="d-min-pct-v">8</span></div></div>
+        <div class="drawer-field"><div class="drawer-field-label">&nbsp;</div><div class="drawer-field-value">Max (%) <span id="d-max-pct-v">13</span></div></div>
+      </div>
+      <div class="drawer-row">
+        <div class="drawer-field"><div class="drawer-field-label">Min – Max markup ($)</div><div class="drawer-field-value">$ <span id="d-min-dol-v">0</span></div></div>
+        <div class="drawer-field"><div class="drawer-field-label">&nbsp;</div><div class="drawer-field-value">$ <span id="d-max-dol-v">13</span></div></div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div class="drawer-field-label">Last edited by</div>
+        <div class="drawer-field-value" style="margin-top:2px">Tala Ilaian on 00/00/0000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL: Cancel change request
+════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="cancel-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Cancel this change request?</span>
+      <button class="modal-close" onclick="closeModal('cancel-modal')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">Any details and rules added will be deleted.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('cancel-modal')">Back</button>
+      <button class="btn btn-danger" onclick="confirmCancel()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     OVERFLOW MENUS (rendered at body level)
+════════════════════════════════════════════════ -->
+<div id="overflow-menu-account-review" class="menu" style="display:none;position:fixed">
+  <button class="menu-item" onclick="nav('review-rule-changes');closeAllMenus()">Review change request</button>
+  <button class="menu-item" onclick="nav('create-request');closeAllMenus()">Edit</button>
+  <button class="menu-item" onclick="closeAllMenus()">Cancel</button>
+  <div class="menu-sep"></div>
+  <button class="menu-item" onclick="closeAllMenus()">Show status history</button>
+</div>
+<div id="overflow-menu-active" class="menu" style="display:none;position:fixed">
+  <button class="menu-item" onclick="nav('create-request');closeAllMenus()">Edit</button>
+  <button class="menu-item" onclick="closeAllMenus()">Deactivate</button>
+  <div class="menu-sep"></div>
+  <button class="menu-item" onclick="closeAllMenus()">Show status history</button>
+</div>
+<div id="overflow-menu-inactive" class="menu" style="display:none;position:fixed">
+  <button class="menu-item" onclick="nav('create-request');closeAllMenus()">Edit</button>
+  <button class="menu-item" onclick="closeAllMenus()">Deactivate</button>
+  <div class="menu-sep"></div>
+  <button class="menu-item" onclick="closeAllMenus()">Show status history</button>
+</div>
+
+<script>
+/* ── DATA ── */
+let requests = [
+  {id:1, name:'First project', desc:'This project is our beginning', status:'Account review', updated:'03/08/2026', by:'Tala Ilaian', rules:1},
+  {id:2, name:'Summer pricing', desc:'Q3 seasonal adjustments', status:'Active', updated:'03/05/2026', by:'Tala Ilaian', rules:3},
+];
+
+/* ── NAVIGATION ── */
+function nav(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+screen).classList.add('active');
+  closeAllMenus();
+  window.scrollTo(0,0);
+  // Sync sidebar active state
+  if(['active-rules','change-requests','groups','analytics'].includes(screen)){
+    document.getElementById('sb-price-markups').classList.add('active');
+  }
+}
+
+/* ── RENDER CHANGE REQUESTS TABLE ── */
+function renderRequests(data) {
+  const tbody = document.getElementById('cr-tbody');
+  tbody.innerHTML = '';
+  data.forEach(r => {
+    const tr = document.createElement('tr');
+    const menuId = r.status === 'Account review' ? 'account-review' : r.status === 'Active' ? 'active' : 'inactive';
+    const badgeClass = r.status === 'Active' ? 'badge-active' : r.status === 'Account review' ? 'badge-review' : 'badge-inactive';
+    tr.innerHTML = `
+      <td><button class="btn-ghost" onclick="openRequest(${r.id})">${r.name}</button></td>
+      <td style="color:var(--text-2)">${r.desc}</td>
+      <td><span class="badge ${badgeClass}"><span class="badge-dot"></span>${r.status}</span></td>
+      <td style="color:var(--text-2)">${r.updated}</td>
+      <td style="color:var(--text-2)">${r.by}</td>
+      <td style="color:var(--text-2)">${r.rules}</td>
+      <td><button class="btn-icon-dots" onclick="showMenu(event,'overflow-menu-${menuId}')">
+        <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor"><circle cx="2" cy="2" r="1.5"/><circle cx="8" cy="2" r="1.5"/><circle cx="14" cy="2" r="1.5"/></svg>
+      </button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('cr-pagination').textContent = `1 – ${data.length} of ${data.length} change requests`;
+}
+
+function filterRequests() {
+  const q = document.getElementById('cr-search').value.toLowerCase();
+  const s = document.getElementById('cr-status').value;
+  renderRequests(requests.filter(r =>
+    (!q || r.name.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q)) &&
+    (!s || r.status === s)
+  ));
+}
+
+function openRequest(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('review-title').textContent = r.name;
+  if (r.status === 'Account review') {
+    document.getElementById('review-accept-btn').style.display = '';
+    document.getElementById('review-reject-btn').style.display = '';
+    document.getElementById('review-meta').textContent = `Reviewed/Rejected by Tala Ilaian · Edited by Tala Ilaian on 03/08/2026`;
+  } else {
+    document.getElementById('review-accept-btn').style.display = 'none';
+    document.getElementById('review-reject-btn').style.display = 'none';
+  }
+  document.getElementById('review-notif').style.display = 'none';
+  nav('review-request');
+}
+
+/* ── OVERFLOW MENUS ── */
+function showMenu(e, menuId) {
+  e.stopPropagation();
+  closeAllMenus();
+  const menu = document.getElementById(menuId);
+  const btn = e.currentTarget;
+  const rect = btn.getBoundingClientRect();
+  menu.style.display = 'block';
+  menu.style.top = (rect.bottom + 4) + 'px';
+  menu.style.right = (window.innerWidth - rect.right) + 'px';
+  menu.style.left = 'auto';
+}
+function closeAllMenus() {
+  document.querySelectorAll('.menu').forEach(m => m.style.display = 'none');
+}
+document.addEventListener('click', closeAllMenus);
+
+/* ── DRAWER ── */
+function openDrawer(name, stores, membership, products, target, range, minPct, maxPct, minDol, maxDol) {
+  document.getElementById('drawer-title').textContent =
+    `${target} markup on ${membership.toLowerCase()} on marketplace`;
+  document.getElementById('d-storefront').textContent = 'Marketplace';
+  document.getElementById('d-stores').textContent = stores;
+  document.getElementById('d-membership').textContent = membership;
+  document.getElementById('d-products').textContent = products;
+  document.getElementById('d-target').textContent = '% ' + target.replace('%','').trim();
+  document.getElementById('d-min-pct-v').textContent = minPct.replace('%','').trim();
+  document.getElementById('d-max-pct-v').textContent = maxPct.replace('%','').trim();
+  document.getElementById('d-min-dol-v').textContent = minDol.replace('$','').trim();
+  document.getElementById('d-max-dol-v').textContent = maxDol.replace('$','').trim();
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+
+/* ── MODAL ── */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function confirmCancel() { closeModal('cancel-modal'); nav('change-requests'); }
+
+/* ── FORM ACTIONS ── */
+function submitRequest() {
+  const name = document.getElementById('new-req-name').value.trim() || 'New request';
+  const desc = document.getElementById('new-req-desc').value.trim() || '';
+  const existing = requests.find(r => r.name === name);
+  if (!existing) {
+    requests.push({id: Date.now(), name, desc, status:'Account review', updated: new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}), by:'Tala Ilaian', rules: document.querySelectorAll('#rules-tbody tr').length});
+  }
+  nav('change-requests');
+}
+
+function deleteRule(btn) {
+  const tr = btn.closest('tr');
+  tr.style.transition = 'opacity .2s';
+  tr.style.opacity = '0';
+  setTimeout(() => tr.remove(), 200);
+}
+
+let ruleCount = 3;
+function addRule() {
+  ruleCount++;
+  const tbody = document.getElementById('rules-tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><button class="btn-ghost" onclick="openDrawer('New Rule ${ruleCount}','All stores','All','All','0%','None','0%','0%','$0','$0')">New Rule ${ruleCount}</button></td>
+    <td>All stores</td><td>All</td><td>All</td><td>0%</td><td>None</td>
+    <td class="rules-table__actions">
+      <button class="btn-icon" title="Edit">✏️</button>
+      <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
+      <button class="btn-icon" title="Copy">📋</button>
+    </td>`;
+  tbody.appendChild(tr);
+}
+
+/* ── ACCEPT / REJECT ── */
+function acceptRequest() {
+  const notif = document.getElementById('review-notif');
+  notif.className = 'notif notif-success';
+  notif.innerHTML = '✓ Change request accepted. Rules will be activated after partner approval.';
+  notif.style.display = 'flex';
+  document.getElementById('review-accept-btn').style.display = 'none';
+  document.getElementById('review-reject-btn').style.display = 'none';
+  requests.forEach(r => { if (r.name === document.getElementById('review-title').textContent) r.status = 'Active'; });
+}
+function rejectRequest() {
+  const notif = document.getElementById('review-notif');
+  notif.className = 'notif notif-error';
+  notif.innerHTML = '✕ Change request rejected.';
+  notif.style.display = 'flex';
+  document.getElementById('review-accept-btn').style.display = 'none';
+  document.getElementById('review-reject-btn').style.display = 'none';
+  requests.forEach(r => { if (r.name === document.getElementById('review-title').textContent) r.status = 'Inactive'; });
+}
+
+/* ── INIT ── */
+renderRequests(requests);
+</script>
+</body>
+</html>
