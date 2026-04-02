@@ -321,6 +321,132 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .tray-chip-remove { background: none; border: none; cursor: pointer; color: var(--text-3); padding: 0; display: flex; align-items: center; }
 .tray-chip-remove:hover { color: var(--error); }
 .tray-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* =============================== */
+/* DESIGN D — COMPACT DRAWER       */
+/* =============================== */
+#design-d { background: var(--bg); }
+
+/* Simulated host page behind the drawer */
+.dd-host {
+  height: calc(100vh - 48px); overflow: hidden; position: relative;
+  display: flex; flex-direction: column;
+}
+.dd-host-topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 32px; height: 52px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0;
+}
+.dd-host-title { font-size: 16px; font-weight: 700; }
+.dd-host-body { flex: 1; padding: 24px 32px; overflow-y: auto; }
+.dd-host-table { width: 100%; border-collapse: collapse; background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.dd-host-table th { padding: 9px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); text-align: left; border-bottom: 1px solid var(--border); background: #FAFAFA; }
+.dd-host-table td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #F3F4F6; }
+.dd-host-table tr:last-child td { border-bottom: none; }
+.dd-host-hint { font-size: 12px; color: var(--text-3); margin-bottom: 12px; }
+
+/* Scrim */
+.dd-scrim {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 10;
+}
+.dd-scrim.visible { opacity: 1; pointer-events: auto; }
+
+/* Drawer panel */
+.dd-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 680px; background: white;
+  box-shadow: -4px 0 32px rgba(0,0,0,0.14);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
+}
+.dd-drawer.open { transform: translateX(0); }
+
+/* Drawer header */
+.dd-header {
+  padding: 0 20px; height: 52px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0; background: white;
+}
+.dd-header-title { font-size: 15px; font-weight: 700; flex: 1; }
+.dd-close {
+  width: 32px; height: 32px; border-radius: 6px; background: none; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-3); transition: all 0.15s;
+}
+.dd-close:hover { background: var(--bg); color: var(--text); }
+
+/* Drawer body — scrollable */
+.dd-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-height: 0; }
+
+/* Group details strip */
+.dd-details-strip {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #FAFAFA;
+}
+.dd-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 5px; }
+.dd-input {
+  width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: 13px; color: var(--text); background: white; outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.dd-input:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(10,85,70,0.1); }
+.dd-input::placeholder { color: var(--text-3); }
+
+/* Search + filter bar */
+.dd-search-bar {
+  padding: 10px 20px 0; display: flex; gap: 8px; align-items: center;
+}
+.dd-search-bar .search-wrap { flex: 1; }
+.dd-cat-row { padding: 8px 20px 10px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+.dd-cat-row .cat-chip { font-size: 11px; padding: 4px 10px; }
+
+/* Product table compact */
+.dd-table-scroll { flex: 1; overflow-y: auto; min-height: 0; }
+.dd-prod-table { width: 100%; border-collapse: collapse; }
+.dd-prod-table th { padding: 7px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); text-align: left; border-bottom: 1px solid var(--border); background: #FAFAFA; position: sticky; top: 0; z-index: 1; }
+.dd-prod-table th.chk-col { width: 38px; text-align: center; }
+.dd-prod-table td { padding: 8px 14px; font-size: 12px; border-bottom: 1px solid #F3F4F6; }
+.dd-prod-table td.chk-col { text-align: center; }
+.dd-prod-table tr:hover td { background: var(--bg); }
+.dd-prod-table tr.selected td { background: var(--green-light); }
+.dd-prod-table .prod-name { font-weight: 500; font-size: 12px; }
+.dd-prod-table .prod-sku { font-size: 10px; color: var(--text-3); }
+
+/* Selection strip — pinned above footer */
+.dd-sel-strip {
+  border-top: 1px solid var(--border);
+  background: white; flex-shrink: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.2s ease;
+}
+.dd-sel-strip.has-items { max-height: 80px; }
+.dd-sel-strip-inner {
+  padding: 8px 20px; display: flex; align-items: center; gap: 8px;
+}
+.dd-sel-label { font-size: 11px; font-weight: 700; color: var(--text-2); white-space: nowrap; }
+.dd-sel-chips { display: flex; gap: 5px; overflow-x: auto; flex: 1; }
+.dd-sel-chips::-webkit-scrollbar { height: 3px; }
+.dd-sel-chips::-webkit-scrollbar-thumb { background: var(--green-border); border-radius: 2px; }
+.dd-sel-chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px 3px 9px;
+  background: var(--green-light); border: 1px solid var(--green-border);
+  border-radius: 20px; font-size: 11px; font-weight: 500; color: var(--green-dark);
+  white-space: nowrap; flex-shrink: 0;
+}
+.dd-sel-chip button { background: none; border: none; cursor: pointer; color: var(--text-3); padding: 0; display: flex; align-items: center; line-height: 1; }
+.dd-sel-chip button:hover { color: var(--error); }
+
+/* Drawer footer */
+.dd-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; background: white;
+}
+.dd-footer-left { font-size: 12px; color: var(--text-3); }
+.dd-footer-right { display: flex; gap: 8px; }
 </style>
 </head>
 <body>
@@ -334,6 +460,7 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
   <button class="switcher-btn active" onclick="showDesign('a')">A — Split Panel</button>
   <button class="switcher-btn" onclick="showDesign('b')">B — Stepper Wizard</button>
   <button class="switcher-btn" onclick="showDesign('c')">C — Selection Tray</button>
+  <button class="switcher-btn" onclick="showDesign('d')">D — Drawer (compact)</button>
 </nav>
 
 <!-- ============================================================ -->
@@ -733,6 +860,134 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
   </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- DESIGN D — COMPACT DRAWER                                    -->
+<!-- Slides in from right over existing workflow page             -->
+<!-- ============================================================ -->
+<div id="design-d" class="design-frame">
+  <div class="dd-host">
+
+    <!-- Simulated host page (markup rules list) -->
+    <div class="dd-host-topbar">
+      <span class="dd-host-title">Markup rules</span>
+      <button class="btn btn-primary" onclick="ddOpen()" style="font-size:13px;padding:7px 14px">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        New product group
+      </button>
+    </div>
+    <div class="dd-host-body">
+      <p class="dd-host-hint">Click "New product group" to open the drawer →</p>
+      <table class="dd-host-table">
+        <thead><tr><th>Group name</th><th>Products</th><th>Created</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Premium Dairy</td><td>12 products</td><td>Mar 18, 2026</td><td><span class="cat-badge produce">Active</span></td></tr>
+          <tr><td>Seasonal Produce</td><td>34 products</td><td>Mar 10, 2026</td><td><span class="cat-badge produce">Active</span></td></tr>
+          <tr><td>Express Essentials</td><td>8 products</td><td>Feb 28, 2026</td><td><span class="cat-badge dairy">Draft</span></td></tr>
+          <tr><td>Bakery Specials</td><td>19 products</td><td>Feb 14, 2026</td><td><span class="cat-badge produce">Active</span></td></tr>
+          <tr><td>Weekend Proteins</td><td>7 products</td><td>Jan 30, 2026</td><td><span class="cat-badge protein">Active</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Scrim -->
+    <div class="dd-scrim" id="dd-scrim" onclick="ddClose()"></div>
+
+    <!-- Drawer -->
+    <div class="dd-drawer" id="dd-drawer">
+
+      <!-- Header -->
+      <div class="dd-header">
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <span class="dd-header-title">Create product group</span>
+          <span style="font-size:11px;color:var(--text-3)">Add a name and select products to include</span>
+        </div>
+        <button class="dd-close" onclick="ddClose()" title="Close">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Body (scrollable content) -->
+      <div class="dd-body">
+
+        <!-- Group details strip -->
+        <div class="dd-details-strip">
+          <div class="dd-field">
+            <label>Group name</label>
+            <input class="dd-input" type="text" placeholder="e.g. Premium Dairy Products" value="Premium Dairy Products">
+          </div>
+          <div class="dd-field">
+            <label>Description <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input class="dd-input" type="text" placeholder="What's in this group?">
+          </div>
+        </div>
+
+        <!-- Search row -->
+        <div class="dd-search-bar">
+          <div class="search-wrap" style="flex:1">
+            <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input class="search-input" id="dd-search" type="text" placeholder="Search by name or SKU…" oninput="ddFilter()" style="font-size:12px;padding-top:7px;padding-bottom:7px">
+          </div>
+          <button class="upload-btn" style="font-size:12px;padding:7px 12px" onclick="showToast('CSV uploaded — 8 products added', 'success')">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Upload CSV
+          </button>
+          <span style="font-size:11px;color:var(--text-3);white-space:nowrap" id="dd-match-count">32 products</span>
+        </div>
+
+        <!-- Category chips -->
+        <div class="dd-cat-row" id="dd-chips">
+          <button class="cat-chip active" data-cat="" onclick="ddCat(this)">All</button>
+          <button class="cat-chip" data-cat="dairy" onclick="ddCat(this)">Dairy</button>
+          <button class="cat-chip" data-cat="produce" onclick="ddCat(this)">Produce</button>
+          <button class="cat-chip" data-cat="protein" onclick="ddCat(this)">Protein</button>
+          <button class="cat-chip" data-cat="bakery" onclick="ddCat(this)">Bakery</button>
+          <button class="cat-chip" data-cat="beverages" onclick="ddCat(this)">Beverages</button>
+          <button class="cat-chip" data-cat="pantry" onclick="ddCat(this)">Pantry</button>
+        </div>
+
+        <!-- Product table (compact) -->
+        <div class="dd-table-scroll">
+          <table class="dd-prod-table">
+            <thead>
+              <tr>
+                <th class="chk-col"><input type="checkbox" id="dd-select-all" onchange="ddSelectAll(this)"></th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody id="dd-tbody"></tbody>
+          </table>
+        </div>
+
+      </div><!-- /dd-body -->
+
+      <!-- Selection strip (slides open when items selected) -->
+      <div class="dd-sel-strip" id="dd-sel-strip">
+        <div class="dd-sel-strip-inner">
+          <span class="dd-sel-label" id="dd-sel-label">0 selected</span>
+          <div class="dd-sel-chips" id="dd-sel-chips"></div>
+          <button class="btn-danger-ghost" onclick="ddClearAll()" style="font-size:11px;padding:3px 8px">Remove all</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="dd-footer">
+        <span class="dd-footer-left" id="dd-footer-hint">Select products to add to the group</span>
+        <div class="dd-footer-right">
+          <button class="btn btn-secondary" onclick="ddClose()" style="font-size:13px;padding:7px 16px">Cancel</button>
+          <button class="btn btn-primary" id="dd-save-btn" disabled onclick="ddSave()" style="font-size:13px;padding:7px 16px">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5l-7.5 7.5-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Create group
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /dd-drawer -->
+
+  </div><!-- /dd-host -->
+</div>
+
 <script>
 // ===========================
 // SHARED PRODUCT DATA
@@ -1004,13 +1259,83 @@ function dcSetView(v){
 }
 
 // ==============================
+// DESIGN D — COMPACT DRAWER
+// ==============================
+let ddSelected = new Set();
+let ddActiveCat = '';
+let ddQuery = '';
+
+function ddFiltered(){
+  return PRODUCTS.filter(p=>
+    (!ddActiveCat||p.cat===ddActiveCat)&&
+    (!ddQuery||p.name.toLowerCase().includes(ddQuery)||p.sku.toLowerCase().includes(ddQuery))
+  );
+}
+
+function ddRender(){
+  const filtered = ddFiltered();
+  document.getElementById('dd-tbody').innerHTML = filtered.map(p=>`
+    <tr class="${ddSelected.has(p.id)?'selected':''}" onclick="ddToggle('${p.id}')">
+      <td class="chk-col"><input type="checkbox" ${ddSelected.has(p.id)?'checked':''} onchange="ddToggle('${p.id}')" onclick="event.stopPropagation()"></td>
+      <td><div class="prod-name">${p.name}</div><div class="prod-sku">${p.sku}</div></td>
+      <td><span class="cat-badge ${p.cat}" style="font-size:10px">${catLabel(p.cat)}</span></td>
+      <td style="font-weight:600;font-size:12px">$${p.price.toFixed(2)}</td>
+    </tr>
+  `).join('');
+  document.getElementById('dd-match-count').textContent = `${filtered.length} products`;
+
+  const count = ddSelected.size;
+  document.getElementById('dd-sel-label').textContent = `${count} selected`;
+  document.getElementById('dd-save-btn').disabled = count === 0;
+  document.getElementById('dd-footer-hint').textContent = count > 0
+    ? `${count} product${count===1?'':'s'} will be added to the group`
+    : 'Select products to add to the group';
+
+  const strip = document.getElementById('dd-sel-strip');
+  strip.classList.toggle('has-items', count > 0);
+
+  const chipsEl = document.getElementById('dd-sel-chips');
+  chipsEl.innerHTML = [...ddSelected].map(id=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return `<span class="dd-sel-chip">${p.name.length>22?p.name.slice(0,20)+'…':p.name}<button onclick="ddToggle('${p.id}');event.stopPropagation()" title="Remove"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></span>`;
+  }).join('');
+}
+
+function ddToggle(id){ if(ddSelected.has(id))ddSelected.delete(id);else ddSelected.add(id); ddRender(); }
+function ddClearAll(){ ddSelected.clear(); ddRender(); }
+function ddFilter(){ ddQuery=document.getElementById('dd-search').value.toLowerCase(); ddRender(); }
+function ddCat(btn){
+  document.querySelectorAll('#dd-chips .cat-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ddActiveCat=btn.dataset.cat;
+  ddRender();
+}
+function ddSelectAll(cb){ ddFiltered().forEach(p=>{ if(cb.checked)ddSelected.add(p.id);else ddSelected.delete(p.id); }); ddRender(); }
+
+function ddOpen(){
+  document.getElementById('dd-drawer').classList.add('open');
+  document.getElementById('dd-scrim').classList.add('visible');
+  ddRender();
+}
+function ddClose(){
+  document.getElementById('dd-drawer').classList.remove('open');
+  document.getElementById('dd-scrim').classList.remove('visible');
+}
+function ddSave(){
+  showToast(`Group created with ${ddSelected.size} products`, 'success');
+  ddClose();
+  ddSelected.clear();
+  ddRender();
+}
+
+// ==============================
 // DESIGN SWITCHER
 // ==============================
 function showDesign(d){
   document.querySelectorAll('.design-frame').forEach(f=>f.classList.remove('active'));
   document.querySelectorAll('.switcher-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(`design-${d}`).classList.add('active');
-  document.querySelectorAll('.switcher-btn')[['a','b','c'].indexOf(d)].classList.add('active');
+  document.querySelectorAll('.switcher-btn')[['a','b','c','d'].indexOf(d)].classList.add('active');
 }
 
 // ==============================
@@ -1033,6 +1358,7 @@ function showToast(msg, type=''){
 daRender();
 dbRender();
 dcRender();
+ddRender();
 </script>
 </body>
 </html>
