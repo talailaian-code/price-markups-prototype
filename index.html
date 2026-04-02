@@ -294,19 +294,85 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
 /* ── DRAWER ── */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:400;display:none;animation:overlayIn .2s ease}
 .drawer-overlay.open{display:block}
-.drawer{position:fixed;right:0;top:0;bottom:0;width:400px;background:white;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:420px;background:white;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1),width .25s cubic-bezier(.16,1,.3,1);overflow:hidden}
 .drawer.open{transform:translateX(0)}
-.drawer-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.drawer.group-creator-open{width:680px}
+.drawer-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
 .drawer-title{font-size:15px;font-weight:700;line-height:1.3}
 .drawer-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-2)}
 .drawer-close:hover{background:var(--bg)}
 .drawer-body{flex:1;overflow-y:auto;padding:20px}
+.drawer-footer-bar{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;background:white}
 .drawer-section{margin-bottom:20px}
 .drawer-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);margin-bottom:12px}
 .drawer-field{margin-bottom:14px}
-.drawer-field-label{font-size:12px;color:var(--text-2);margin-bottom:3px}
+.drawer-field-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px;display:flex;align-items:center;gap:4px}
 .drawer-field-value{font-size:14px;font-weight:500;color:var(--text)}
 .drawer-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* Drawer form inputs */
+.dr-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+.dr-input:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(10,85,70,.1)}
+.dr-select{width:100%;padding:8px 32px 8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text);background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238D9096' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") no-repeat right 10px center;appearance:none;-webkit-appearance:none;outline:none;cursor:pointer;transition:border-color .15s}
+.dr-select:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(10,85,70,.1)}
+/* Collapsible drawer section */
+.drawer-section-toggle{width:100%;display:flex;align-items:center;gap:8px;padding:0 0 14px;background:none;border:none;font-family:inherit;cursor:pointer;text-align:left}
+.drawer-section-toggle .dst-label{font-size:14px;font-weight:700;color:var(--green-dark);flex:1}
+.drawer-section-toggle .dst-chevron{color:var(--green-dark);transition:transform .2s}
+.drawer-section-toggle.collapsed .dst-chevron{transform:rotate(-90deg)}
+.drawer-section-body{overflow:hidden;transition:max-height .2s ease}
+/* Products custom dropdown */
+.products-field{position:relative}
+.products-trigger{width:100%;padding:8px 32px 8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text);background:white;text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color .15s}
+.products-trigger:hover,.products-trigger.open{border-color:var(--green-mid)}
+.products-trigger .pt-dot{width:10px;height:10px;border-radius:50%;background:#22C55E;flex-shrink:0}
+.products-trigger .pt-label{flex:1;font-size:13px}
+.products-trigger .pt-chevron{color:var(--text-3);margin-left:auto;transition:transform .2s}
+.products-trigger.open .pt-chevron{transform:rotate(180deg)}
+.products-dropdown-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:10;overflow:hidden;display:none}
+.products-dropdown-menu.open{display:block}
+.pdm-item{padding:9px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text);transition:background .1s}
+.pdm-item:hover{background:var(--bg)}
+.pdm-item.selected{background:var(--green-light);color:var(--green-dark);font-weight:500}
+.pdm-item .pdm-dot{width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0}
+.pdm-item.new-group{color:var(--green-mid);font-weight:600;border-top:1px solid var(--border)}
+.pdm-item.new-group:hover{background:var(--green-light)}
+/* ── Two-panel slide system ── */
+.drawer-panels{display:flex;width:200%;height:100%;transition:transform .28s cubic-bezier(.16,1,.3,1)}
+.drawer-panels.show-group{transform:translateX(-50%)}
+.drawer-panel{width:50%;display:flex;flex-direction:column;height:100%;overflow:hidden;flex-shrink:0}
+/* Group creator panel styles */
+.gc-back{display:flex;align-items:center;gap:6px;background:none;border:none;font-family:inherit;font-size:13px;color:var(--green-mid);cursor:pointer;padding:0;font-weight:500}
+.gc-back:hover{color:var(--green-dark)}
+.gc-body{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.gc-fields{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:#FAFAFA}
+.gc-search-row{display:flex;gap:8px;align-items:center;padding:12px 20px 0;flex-shrink:0}
+.gc-search-row .search-wrap-gc{position:relative;flex:1}
+.gc-search-row .search-icon-gc{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.gc-search-input{width:100%;padding:7px 10px 7px 32px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:12px;outline:none;transition:border-color .15s}
+.gc-search-input:focus{border-color:var(--green-mid)}
+.gc-cat-row{display:flex;gap:5px;padding:8px 20px 10px;flex-wrap:wrap;border-bottom:1px solid var(--border);flex-shrink:0}
+.gc-cat-chip{padding:4px 10px;border-radius:20px;font-family:inherit;font-size:11px;font-weight:500;border:1px solid var(--border);background:white;color:var(--text-2);cursor:pointer;transition:all .15s}
+.gc-cat-chip:hover{border-color:var(--green-mid);color:var(--green-mid)}
+.gc-cat-chip.active{background:var(--green-mid);border-color:var(--green-mid);color:white}
+.gc-table-wrap{flex:1;overflow-y:auto}
+.gc-tbl{width:100%;border-collapse:collapse}
+.gc-tbl th{padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);text-align:left;border-bottom:1px solid var(--border);background:#FAFAFA;position:sticky;top:0;z-index:1}
+.gc-tbl th.chk{width:36px;text-align:center}
+.gc-tbl td{padding:8px 14px;font-size:12px;border-bottom:1px solid #F3F4F6;cursor:pointer}
+.gc-tbl td.chk{text-align:center}
+.gc-tbl tr:hover td{background:var(--bg)}
+.gc-tbl tr.gc-selected td{background:var(--green-light)}
+.gc-tbl tr:last-child td{border-bottom:none}
+.gc-sel-strip{border-top:1px solid var(--border);padding:10px 20px;flex-shrink:0;background:white;overflow:hidden;max-height:0;transition:max-height .2s}
+.gc-sel-strip.visible{max-height:64px}
+.gc-sel-strip-inner{display:flex;align-items:center;gap:8px}
+.gc-sel-strip-label{font-size:12px;font-weight:600;color:var(--text-2);white-space:nowrap}
+.gc-chips{display:flex;gap:5px;overflow-x:auto;flex:1}
+.gc-chips::-webkit-scrollbar{height:3px}
+.gc-chips::-webkit-scrollbar-thumb{background:var(--green-border);border-radius:2px}
+.gc-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px 3px 10px;background:var(--green-light);border:1px solid var(--green-border);border-radius:20px;font-size:11px;font-weight:500;color:var(--green-dark);white-space:nowrap;flex-shrink:0}
+.gc-chip button{background:none;border:none;cursor:pointer;color:var(--text-3);padding:0;display:flex;align-items:center;line-height:1}
+.gc-chip button:hover{color:var(--error)}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 
 /* ── MODAL ── */
@@ -1058,50 +1124,197 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
 ════════════════════════════════════════════════ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
-  <div class="drawer-header">
-    <div class="drawer-title" id="drawer-title">Flat 10% markup on delivery for loyalty on marketplace</div>
-    <button class="drawer-close" onclick="closeDrawer()">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    </button>
-  </div>
-  <div class="drawer-body">
-    <div class="drawer-section">
-      <div class="drawer-section-title">Rule details</div>
-      <div class="drawer-field"><div class="drawer-field-label">Storefront</div><div class="drawer-field-value" id="d-storefront">Marketplace</div></div>
-      <div class="drawer-field"><div class="drawer-field-label">Stores</div><div class="drawer-field-value" id="d-stores">All stores</div></div>
-      <div class="drawer-field"><div class="drawer-field-label">Memberships
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
-      </div><div class="drawer-field-value" id="d-membership">Loyalty</div></div>
-      <div class="drawer-field"><div class="drawer-field-label">Products
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
-      </div><div class="drawer-field-value" id="d-products">All products</div></div>
-      <div class="drawer-field"><div class="drawer-field-label">Service type
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
-      </div><div class="drawer-field-value">Delivery</div></div>
+  <div class="drawer-panels" id="drawer-panels">
+
+    <!-- ══ PANEL 1: Add markup rule form ══ -->
+    <div class="drawer-panel" id="drawer-rule-panel">
+      <div class="drawer-header">
+        <div class="drawer-title" id="drawer-title">Add markup rule</div>
+        <button class="drawer-close" onclick="closeDrawer()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body">
+
+        <!-- ─ Rule details section ─ -->
+        <button class="drawer-section-toggle" id="dst-details" onclick="toggleDrawerSection('details')">
+          <svg class="dst-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="dst-label">Rule details</span>
+        </button>
+        <div class="drawer-section-body" id="dsb-details" style="max-height:600px">
+          <div class="drawer-field">
+            <div class="drawer-field-label">Rule name</div>
+            <input class="dr-input" id="d-rule-name" placeholder="Rule name">
+          </div>
+          <div class="drawer-field">
+            <div class="drawer-field-label">Storefronts
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+            </div>
+            <select class="dr-select">
+              <option>All Storefronts</option>
+              <option>Marketplace</option>
+              <option>Storefront Pro</option>
+            </select>
+          </div>
+          <div class="drawer-field">
+            <div class="drawer-field-label">Stores
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+            </div>
+            <select class="dr-select">
+              <option>All stores</option>
+              <option>Store A</option>
+              <option>Store B</option>
+            </select>
+          </div>
+          <!-- Products custom dropdown -->
+          <div class="drawer-field">
+            <div class="drawer-field-label">Products
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+            </div>
+            <div class="products-field" id="products-field">
+              <button class="products-trigger" id="products-trigger" onclick="toggleProductsDropdown()">
+                <div class="pt-dot"></div>
+                <span class="pt-label" id="products-trigger-label">All products</span>
+                <svg class="pt-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="products-dropdown-menu" id="products-dropdown">
+                <div class="pdm-item selected" data-value="all" onclick="selectProduct('all','All products')">
+                  <div class="pdm-dot"></div>All products
+                </div>
+                <div class="pdm-item" id="pdm-group-a" data-value="Group A" onclick="selectProduct('Group A','Group A')">Group A</div>
+                <div class="pdm-item" id="pdm-group-b" data-value="Group B" onclick="selectProduct('Group B','Group B')">Group B</div>
+                <div class="pdm-item" id="pdm-group-c" data-value="Group C" onclick="selectProduct('Group C','Group C')">Group C</div>
+                <div class="pdm-item new-group" onclick="openGroupCreator()">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  Create new product group
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Rule settings section ─ -->
+        <button class="drawer-section-toggle" id="dst-settings" onclick="toggleDrawerSection('settings')" style="margin-top:8px;padding-top:16px;border-top:1px solid var(--border)">
+          <svg class="dst-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="dst-label">Rule settings</span>
+        </button>
+        <div class="drawer-section-body" id="dsb-settings" style="max-height:600px">
+          <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.5">Set the target markup and the rounding to apply to it. Markup limits per-product help control the final shelf price.</div>
+          <div class="drawer-field">
+            <div class="drawer-field-label">Target markup</div>
+            <div style="position:relative">
+              <input class="dr-input" type="number" placeholder="" style="padding-right:32px">
+              <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3)">%</span>
+            </div>
+          </div>
+          <div class="drawer-field">
+            <div class="drawer-field-label">Rounding preference
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+            </div>
+            <select class="dr-select">
+              <option>Round to $0.99</option>
+              <option>Round to $0.49</option>
+              <option>No rounding</option>
+            </select>
+            <div style="font-size:11px;color:var(--text-3);margin-top:5px;line-height:1.5">Prioritizes rounding to the nearest higher price ending in $0.99, then the lower price, after applying the markup.</div>
+          </div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px">Limits on markups per-product
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+          </div>
+          <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Min – Max markup (%)</div>
+          <div class="drawer-row" style="margin-bottom:14px">
+            <input class="dr-input" placeholder="Min (%)">
+            <input class="dr-input" placeholder="Max (%)">
+          </div>
+          <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Min – Max markup ($) <span style="font-size:11px;color:var(--text-3)">(optional)</span></div>
+          <div class="drawer-row">
+            <div style="position:relative"><span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-3)">$</span><input class="dr-input" placeholder="Min" style="padding-left:24px"></div>
+            <div style="position:relative"><span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-3)">$</span><input class="dr-input" placeholder="Max" style="padding-left:24px"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="drawer-footer-bar">
+        <button class="btn btn-secondary" onclick="closeDrawer()" style="font-size:13px;padding:7px 16px">Cancel</button>
+        <button class="btn btn-primary" onclick="saveRule()" style="font-size:13px;padding:7px 16px">Save rule</button>
+      </div>
     </div>
-    <div class="drawer-section" style="border-top:1px solid var(--border);padding-top:20px">
-      <div class="drawer-section-title">Rule settings</div>
-      <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.5">Set the target markup and the rounding to apply to it. Markup limits per-product help control the final shelf price.</div>
-      <div class="drawer-field"><div class="drawer-field-label">Target markup</div><div class="drawer-field-value" id="d-target">% 10</div></div>
-      <div class="drawer-field"><div class="drawer-field-label">Rounding preference
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
-      </div><div class="drawer-field-value">Prioritize rounding to $0.99 <span style="font-size:11px;color:var(--text-2)">(recommended)</span></div></div>
-      <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.5">Prioritizes rounding to the nearest higher price ending in $0.99, then the lower price, after applying the markup.</div>
-      <div style="font-size:13px;font-weight:600;margin-bottom:10px">Limits on markups per-product</div>
-      <div class="drawer-row">
-        <div class="drawer-field"><div class="drawer-field-label">Min – Max markup (%)</div><div class="drawer-field-value" id="d-min-pct">% <span id="d-min-pct-v">8</span></div></div>
-        <div class="drawer-field"><div class="drawer-field-label">&nbsp;</div><div class="drawer-field-value">Max (%) <span id="d-max-pct-v">13</span></div></div>
+
+    <!-- ══ PANEL 2: Create product group ══ -->
+    <div class="drawer-panel" id="drawer-group-panel">
+      <div class="drawer-header">
+        <button class="gc-back" onclick="closeGroupCreator()">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Rule details
+        </button>
+        <div class="drawer-title" style="font-size:14px;margin-left:8px">Create product group</div>
+        <button class="drawer-close" onclick="closeDrawer()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
       </div>
-      <div class="drawer-row">
-        <div class="drawer-field"><div class="drawer-field-label">Min – Max markup ($)</div><div class="drawer-field-value">$ <span id="d-min-dol-v">0</span></div></div>
-        <div class="drawer-field"><div class="drawer-field-label">&nbsp;</div><div class="drawer-field-value">$ <span id="d-max-dol-v">13</span></div></div>
+      <div class="gc-body">
+        <!-- Group name + description -->
+        <div class="gc-fields">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:5px">Group name</div>
+              <input class="dr-input" id="gc-name" placeholder="e.g. Premium Dairy">
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:5px">Description <span style="text-transform:none;font-weight:400">(optional)</span></div>
+              <input class="dr-input" id="gc-desc" placeholder="What's in this group?">
+            </div>
+          </div>
+        </div>
+        <!-- Search + CSV -->
+        <div class="gc-search-row">
+          <div class="search-wrap-gc" style="flex:1">
+            <svg class="search-icon-gc" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input class="gc-search-input" id="gc-search" type="text" placeholder="Search by name or SKU…" oninput="gcFilter()">
+          </div>
+          <button style="display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border:1px dashed var(--border);border-radius:6px;background:white;font-family:inherit;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;white-space:nowrap" onclick="gcShowToast()">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Upload CSV
+          </button>
+        </div>
+        <!-- Category chips -->
+        <div class="gc-cat-row" id="gc-cats">
+          <button class="gc-cat-chip active" data-cat="" onclick="gcCat(this)">All</button>
+          <button class="gc-cat-chip" data-cat="dairy" onclick="gcCat(this)">Dairy</button>
+          <button class="gc-cat-chip" data-cat="produce" onclick="gcCat(this)">Produce</button>
+          <button class="gc-cat-chip" data-cat="protein" onclick="gcCat(this)">Protein</button>
+          <button class="gc-cat-chip" data-cat="bakery" onclick="gcCat(this)">Bakery</button>
+          <button class="gc-cat-chip" data-cat="beverages" onclick="gcCat(this)">Beverages</button>
+          <button class="gc-cat-chip" data-cat="pantry" onclick="gcCat(this)">Pantry</button>
+        </div>
+        <!-- Product table -->
+        <div class="gc-table-wrap">
+          <table class="gc-tbl">
+            <thead><tr>
+              <th class="chk"><input type="checkbox" id="gc-chk-all" onchange="gcSelectAll(this)" style="width:14px;height:14px;accent-color:var(--green-mid)"></th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+            </tr></thead>
+            <tbody id="gc-tbody"></tbody>
+          </table>
+        </div>
+        <!-- Selection strip -->
+        <div class="gc-sel-strip" id="gc-strip">
+          <div class="gc-sel-strip-inner">
+            <span class="gc-sel-strip-label" id="gc-strip-label">0 selected</span>
+            <div class="gc-chips" id="gc-chips"></div>
+            <button style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:11px;font-weight:500;color:var(--error);padding:3px 6px;border-radius:4px;flex-shrink:0" onclick="gcClearAll()">Clear</button>
+          </div>
+        </div>
       </div>
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-        <div class="drawer-field-label">Last edited by</div>
-        <div class="drawer-field-value" style="margin-top:2px">Tala Ilaian on 00/00/0000</div>
+      <div class="drawer-footer-bar">
+        <button class="btn btn-secondary" onclick="closeGroupCreator()" style="font-size:13px;padding:7px 16px">Cancel</button>
+        <button class="btn btn-primary" id="gc-save-btn" onclick="gcCreateGroup()" style="font-size:13px;padding:7px 16px" disabled>Create group</button>
       </div>
     </div>
-  </div>
+
+  </div><!-- /drawer-panels -->
 </div>
 
 <!-- ══════════════════════════════════════════════
@@ -1231,24 +1444,199 @@ function closeAllMenus() {
 document.addEventListener('click', closeAllMenus);
 
 /* ── DRAWER ── */
-function openDrawer(name, stores, membership, products, target, range, minPct, maxPct, minDol, maxDol) {
-  document.getElementById('drawer-title').textContent =
-    `${target} markup on ${membership.toLowerCase()} on marketplace`;
-  document.getElementById('d-storefront').textContent = 'Marketplace';
-  document.getElementById('d-stores').textContent = stores;
-  document.getElementById('d-membership').textContent = membership;
-  document.getElementById('d-products').textContent = products;
-  document.getElementById('d-target').textContent = '% ' + target.replace('%','').trim();
-  document.getElementById('d-min-pct-v').textContent = minPct.replace('%','').trim();
-  document.getElementById('d-max-pct-v').textContent = maxPct.replace('%','').trim();
-  document.getElementById('d-min-dol-v').textContent = minDol.replace('$','').trim();
-  document.getElementById('d-max-dol-v').textContent = maxDol.replace('$','').trim();
+// ── Product group list (starts with defaults) ──
+let productGroups = ['Group A','Group B','Group C'];
+
+function openDrawer(name) {
+  // Reset to rule panel
+  document.getElementById('drawer-panels').classList.remove('show-group');
+  document.getElementById('drawer').classList.remove('group-creator-open');
+  document.getElementById('drawer-title').textContent = name ? `Edit rule: ${name}` : 'Add markup rule';
   document.getElementById('drawer-overlay').classList.add('open');
   document.getElementById('drawer').classList.add('open');
+  renderProductsDropdown();
 }
+
 function closeDrawer() {
   document.getElementById('drawer-overlay').classList.remove('open');
   document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-panels').classList.remove('show-group');
+  document.getElementById('drawer').classList.remove('group-creator-open');
+  closeProductsDropdown();
+}
+
+function saveRule() {
+  closeDrawer();
+}
+
+// ── Products dropdown ──
+let selectedProduct = 'all';
+function renderProductsDropdown() {
+  const menu = document.getElementById('products-dropdown');
+  // Rebuild group items (keep first item + new-group, replace middle)
+  const items = menu.querySelectorAll('.pdm-item:not(.new-group)');
+  items.forEach(i => { if(i.dataset.value !== 'all') i.remove(); });
+  const newGroupBtn = menu.querySelector('.new-group');
+  productGroups.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'pdm-item' + (selectedProduct === g ? ' selected' : '');
+    d.dataset.value = g;
+    d.onclick = () => selectProduct(g, g);
+    d.textContent = g;
+    menu.insertBefore(d, newGroupBtn);
+  });
+  // Sync trigger label
+  document.getElementById('products-trigger-label').textContent =
+    selectedProduct === 'all' ? 'All products' : selectedProduct;
+  const allItem = menu.querySelector('[data-value="all"]');
+  if(allItem) allItem.classList.toggle('selected', selectedProduct === 'all');
+}
+
+function toggleProductsDropdown() {
+  const trigger = document.getElementById('products-trigger');
+  const menu = document.getElementById('products-dropdown');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open', !isOpen);
+  trigger.classList.toggle('open', !isOpen);
+}
+function closeProductsDropdown() {
+  document.getElementById('products-dropdown').classList.remove('open');
+  document.getElementById('products-trigger').classList.remove('open');
+}
+function selectProduct(val, label) {
+  selectedProduct = val;
+  document.getElementById('products-trigger-label').textContent = label;
+  document.querySelectorAll('#products-dropdown .pdm-item').forEach(i =>
+    i.classList.toggle('selected', i.dataset.value === val)
+  );
+  closeProductsDropdown();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if(!document.getElementById('products-field')?.contains(e.target)) closeProductsDropdown();
+});
+
+// ── Drawer section toggle ──
+function toggleDrawerSection(id) {
+  const body = document.getElementById(`dsb-${id}`);
+  const btn  = document.getElementById(`dst-${id}`);
+  const isCollapsed = body.style.maxHeight === '0px';
+  body.style.maxHeight = isCollapsed ? '600px' : '0px';
+  btn.classList.toggle('collapsed', !isCollapsed);
+}
+
+// ── Group creator ──
+const GC_PRODUCTS = [
+  {id:'P001',name:'Organic Whole Milk',     sku:'MLK-001',cat:'dairy',    price:5.99},
+  {id:'P002',name:'2% Reduced Fat Milk',    sku:'MLK-002',cat:'dairy',    price:4.49},
+  {id:'P003',name:'Oat Milk Original',      sku:'MLK-003',cat:'dairy',    price:4.99},
+  {id:'P004',name:'Free Range Eggs 12ct',   sku:'EGG-001',cat:'dairy',    price:6.49},
+  {id:'P005',name:'Sharp Cheddar Cheese',   sku:'CHS-001',cat:'dairy',    price:4.29},
+  {id:'P006',name:'Greek Yogurt Plain',     sku:'YGT-001',cat:'dairy',    price:3.79},
+  {id:'P007',name:'Fuji Apples (per lb)',   sku:'FRT-001',cat:'produce',  price:1.99},
+  {id:'P008',name:'Organic Bananas',        sku:'FRT-002',cat:'produce',  price:0.69},
+  {id:'P009',name:'Strawberries 1 lb',      sku:'FRT-003',cat:'produce',  price:4.49},
+  {id:'P010',name:'Hass Avocados 3ct',      sku:'VEG-001',cat:'produce',  price:3.99},
+  {id:'P011',name:'Baby Spinach 5 oz',      sku:'VEG-002',cat:'produce',  price:3.49},
+  {id:'P012',name:'Cherry Tomatoes 1 pt',   sku:'VEG-003',cat:'produce',  price:3.29},
+  {id:'P013',name:'Chicken Breast',         sku:'MTB-001',cat:'protein',  price:8.99},
+  {id:'P014',name:'Atlantic Salmon Fillet', sku:'SFD-001',cat:'protein',  price:12.99},
+  {id:'P015',name:'Ground Beef 1 lb',       sku:'MTB-002',cat:'protein',  price:6.99},
+  {id:'P016',name:'Sourdough Bread Loaf',   sku:'BKD-001',cat:'bakery',   price:4.99},
+  {id:'P017',name:'Whole Wheat Bread',      sku:'BKD-002',cat:'bakery',   price:3.79},
+  {id:'P018',name:'Croissants 4ct',         sku:'BKD-003',cat:'bakery',   price:5.99},
+  {id:'P019',name:'Orange Juice 52 oz',     sku:'BVG-001',cat:'beverages',price:5.29},
+  {id:'P020',name:'Sparkling Water 12-pk',  sku:'BVG-002',cat:'beverages',price:6.99},
+  {id:'P021',name:'Extra Virgin Olive Oil', sku:'PNT-001',cat:'pantry',   price:9.49},
+  {id:'P022',name:'Jasmine Rice 5 lb',      sku:'PNT-002',cat:'pantry',   price:6.49},
+  {id:'P023',name:'Penne Pasta 16 oz',      sku:'PNT-003',cat:'pantry',   price:1.99},
+];
+const GC_CAT_LABEL = {dairy:'Dairy',produce:'Produce',protein:'Protein',bakery:'Bakery',beverages:'Beverages',pantry:'Pantry'};
+
+let gcSelected = new Set();
+let gcCatActive = '';
+let gcQuery = '';
+
+function gcFiltered(){
+  return GC_PRODUCTS.filter(p=>
+    (!gcCatActive||p.cat===gcCatActive)&&
+    (!gcQuery||p.name.toLowerCase().includes(gcQuery)||p.sku.toLowerCase().includes(gcQuery))
+  );
+}
+
+function gcRender(){
+  const filtered = gcFiltered();
+  document.getElementById('gc-tbody').innerHTML = filtered.map(p=>`
+    <tr class="${gcSelected.has(p.id)?'gc-selected':''}" onclick="gcToggle('${p.id}')">
+      <td class="chk"><input type="checkbox" ${gcSelected.has(p.id)?'checked':''} style="width:14px;height:14px;accent-color:var(--green-mid)" onchange="gcToggle('${p.id}')" onclick="event.stopPropagation()"></td>
+      <td><div style="font-weight:500;font-size:12px">${p.name}</div><div style="font-size:10px;color:var(--text-3)">${p.sku}</div></td>
+      <td><span style="display:inline-flex;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;background:${p.cat==='dairy'?'#EFF6FF':p.cat==='produce'?'#F0FDF4':p.cat==='protein'?'#FFF7ED':p.cat==='bakery'?'#FFFBEB':p.cat==='beverages'?'#F5F3FF':'#FFF1F2'};color:${p.cat==='dairy'?'#1D4ED8':p.cat==='produce'?'#166534':p.cat==='protein'?'#C2410C':p.cat==='bakery'?'#B45309':p.cat==='beverages'?'#6D28D9':'#9F1239'}">${GC_CAT_LABEL[p.cat]}</span></td>
+      <td style="font-weight:600;font-size:12px">$${p.price.toFixed(2)}</td>
+    </tr>
+  `).join('');
+
+  const count = gcSelected.size;
+  document.getElementById('gc-strip-label').textContent = `${count} selected`;
+  document.getElementById('gc-strip').classList.toggle('visible', count > 0);
+  document.getElementById('gc-save-btn').disabled = count === 0 || !document.getElementById('gc-name').value.trim();
+  document.getElementById('gc-chips').innerHTML = [...gcSelected].map(id=>{
+    const p = GC_PRODUCTS.find(x=>x.id===id);
+    return `<span class="gc-chip">${p.name.length>20?p.name.slice(0,18)+'…':p.name}<button onclick="gcToggle('${p.id}');event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></span>`;
+  }).join('');
+}
+
+function gcToggle(id){ if(gcSelected.has(id))gcSelected.delete(id);else gcSelected.add(id); gcRender(); }
+function gcClearAll(){ gcSelected.clear(); gcRender(); }
+function gcFilter(){ gcQuery=document.getElementById('gc-search').value.toLowerCase(); gcRender(); }
+function gcCat(btn){
+  document.querySelectorAll('#gc-cats .gc-cat-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); gcCatActive=btn.dataset.cat; gcRender();
+}
+function gcSelectAll(cb){ gcFiltered().forEach(p=>{ if(cb.checked)gcSelected.add(p.id);else gcSelected.delete(p.id); }); gcRender(); }
+
+function openGroupCreator(){
+  closeProductsDropdown();
+  document.getElementById('gc-name').value='';
+  document.getElementById('gc-desc').value='';
+  document.getElementById('gc-search').value='';
+  gcSelected.clear(); gcCatActive=''; gcQuery='';
+  document.querySelectorAll('#gc-cats .gc-cat-chip').forEach((b,i)=>b.classList.toggle('active',i===0));
+  gcRender();
+  document.getElementById('drawer-panels').classList.add('show-group');
+  document.getElementById('drawer').classList.add('group-creator-open');
+}
+
+function closeGroupCreator(){
+  document.getElementById('drawer-panels').classList.remove('show-group');
+  document.getElementById('drawer').classList.remove('group-creator-open');
+}
+
+document.getElementById('gc-name').addEventListener('input', ()=>{
+  document.getElementById('gc-save-btn').disabled = gcSelected.size===0 || !document.getElementById('gc-name').value.trim();
+});
+
+function gcCreateGroup(){
+  const name = document.getElementById('gc-name').value.trim();
+  if(!name) return;
+  productGroups.push(name);
+  selectedProduct = name;
+  renderProductsDropdown();
+  closeGroupCreator();
+  // Brief confirmation toast
+  const t = document.createElement('div');
+  t.style.cssText='position:fixed;top:16px;right:24px;z-index:9999;background:#0A5546;color:white;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px';
+  t.innerHTML=`<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5l-7.5 7.5-4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>"${name}" created and selected`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+function gcShowToast(){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;top:16px;right:24px;z-index:9999;background:#0A5546;color:white;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15)';
+  t.textContent='CSV uploaded — 8 products added';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
 }
 
 /* ── MODAL ── */
@@ -1274,20 +1662,8 @@ function deleteRule(btn) {
   setTimeout(() => tr.remove(), 200);
 }
 
-let ruleCount = 3;
 function addRule() {
-  ruleCount++;
-  const tbody = document.getElementById('rules-tbody');
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><button class="btn-ghost" onclick="openDrawer('New Rule ${ruleCount}','All stores','All','All','0%','None','0%','0%','$0','$0')">New Rule ${ruleCount}</button></td>
-    <td>All stores</td><td>All</td><td>All</td><td>0%</td><td>None</td>
-    <td class="rules-table__actions">
-      <button class="btn-icon" title="Edit">✏️</button>
-      <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
-      <button class="btn-icon" title="Copy">📋</button>
-    </td>`;
-  tbody.appendChild(tr);
+  openDrawer(null); // open blank "Add markup rule" drawer
 }
 
 /* ── ACCEPT / REJECT ── */
