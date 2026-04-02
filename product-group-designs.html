@@ -337,20 +337,6 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 }
 .de-host-title { font-size: 16px; font-weight: 700; }
 .de-host-body { flex: 1; padding: 24px 32px; overflow-y: auto; }
-.de-host-hint { font-size: 13px; color: var(--text-2); margin-bottom: 16px; line-height: 1.6; }
-
-/* Mode picker cards on background */
-.de-mode-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.de-mode-card {
-  background: white; border: 2px solid var(--border); border-radius: var(--radius);
-  padding: 14px 16px; cursor: pointer; transition: all 0.15s;
-}
-.de-mode-card:hover { border-color: var(--green-mid); }
-.de-mode-card.active { border-color: var(--green-mid); background: var(--green-light); }
-.de-mode-card .mc-label { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.de-mode-card .mc-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; }
-.de-mode-card.active .mc-label { color: var(--green-dark); }
-.de-mode-card.active .mc-desc { color: var(--green-mid); }
 
 /* Scrim */
 .de-scrim {
@@ -359,38 +345,49 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 }
 .de-scrim.visible { opacity: 1; pointer-events: auto; }
 
-/* Base drawer */
+/* Single drawer */
 .de-drawer {
-  position: absolute; top: 0; right: 0; bottom: 0;
+  position: absolute; top: 0; right: 0; bottom: 0; width: 720px;
   background: white; box-shadow: -4px 0 32px rgba(0,0,0,0.14);
   display: flex; flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), width 0.2s ease;
   z-index: 20; overflow: hidden;
 }
 .de-drawer.open { transform: translateX(0); }
+.de-drawer.mode-panel { width: 820px; }
 
-/* Drawer widths per mode */
-.de-drawer.mode-panel   { width: 780px; }
-.de-drawer.mode-tabs    { width: 640px; }
-.de-drawer.mode-pinned  { width: 640px; }
-.de-drawer.mode-expand  { width: 640px; }
-
-/* Shared drawer header */
+/* Drawer header */
 .de-header {
-  padding: 0 20px; height: 52px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px; flex-shrink: 0; background: white;
+  padding: 0 16px 0 20px; height: 52px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0; background: white;
 }
-.de-header-title { font-size: 15px; font-weight: 700; flex: 1; }
-.de-header-sub { font-size: 11px; color: var(--text-3); }
+.de-header-title { font-size: 15px; font-weight: 700; white-space: nowrap; }
+
+/* In-drawer view switcher (segmented control) */
+.de-seg {
+  display: flex; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px; gap: 2px; flex: 1; max-width: 380px; margin: 0 4px;
+}
+.de-seg-btn {
+  flex: 1; padding: 5px 10px; border-radius: 4px; background: transparent; border: none;
+  font-family: inherit; font-size: 11px; font-weight: 500; color: var(--text-3);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap; text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+.de-seg-btn:hover { color: var(--text-2); background: rgba(0,0,0,0.04); }
+.de-seg-btn.active { background: white; color: var(--green-mid); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.de-seg-count { min-width: 16px; height: 16px; padding: 0 4px; background: var(--green-mid); color: white; border-radius: 20px; font-size: 9px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.de-seg-btn:not(.active) .de-seg-count { background: var(--border); color: var(--text-3); }
+
 .de-close {
-  width: 32px; height: 32px; border-radius: 6px; background: none; border: none;
+  width: 30px; height: 30px; border-radius: 6px; background: none; border: none;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: var(--text-3); transition: all 0.15s;
+  color: var(--text-3); transition: all 0.15s; flex-shrink: 0;
 }
 .de-close:hover { background: var(--bg); color: var(--text); }
 
-/* Compact detail strip (shared) */
+/* Compact detail strip */
 .de-details {
   padding: 12px 20px; border-bottom: 1px solid var(--border);
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #FAFAFA; flex-shrink: 0;
@@ -404,7 +401,7 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-inp:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(10,85,70,0.1); }
 .de-inp::placeholder { color: var(--text-3); }
 
-/* Compact table shared */
+/* Shared table */
 .de-tbl { width: 100%; border-collapse: collapse; }
 .de-tbl th { padding: 7px 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); text-align: left; border-bottom: 1px solid var(--border); background: #FAFAFA; position: sticky; top: 0; z-index: 1; }
 .de-tbl th.chk { width: 36px; text-align: center; }
@@ -416,10 +413,8 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-tbl .pn { font-weight: 500; font-size: 12px; }
 .de-tbl .ps { font-size: 10px; color: var(--text-3); margin-top: 1px; }
 
-/* Search row shared */
-.de-search-row {
-  padding: 10px 20px 0; display: flex; gap: 8px; align-items: center; flex-shrink: 0;
-}
+/* Shared search row + cat row */
+.de-search-row { padding: 10px 20px 0; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 .de-search-row .search-wrap { flex: 1; }
 .de-cat-row { padding: 8px 20px 10px; display: flex; gap: 5px; flex-wrap: wrap; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .de-cat-row .cat-chip { font-size: 11px; padding: 4px 10px; }
@@ -433,18 +428,16 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-footer-hint { font-size: 12px; color: var(--text-3); }
 .de-footer-actions { display: flex; gap: 8px; }
 
+/* Mode content sections — only one visible at a time */
+.de-mode-section { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
+.de-mode-section.active { display: flex; }
+
 /* ---- MODE 1: SIDE PANEL ---- */
-.de-panel-body { flex: 1; display: grid; grid-template-columns: 1fr 240px; min-height: 0; }
+.de-panel-body { flex: 1; display: grid; grid-template-columns: 1fr 220px; min-height: 0; }
 .de-panel-left { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
-.de-panel-left .de-search-row { padding-right: 20px; }
-.de-panel-left .de-cat-row { padding-right: 20px; }
 .de-panel-scroll { flex: 1; overflow-y: auto; }
-.de-panel-right { display: flex; flex-direction: column; min-height: 0; background: white; }
-.de-panel-right-head {
-  padding: 10px 14px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  background: #FAFAFA; flex-shrink: 0;
-}
+.de-panel-right { display: flex; flex-direction: column; min-height: 0; }
+.de-panel-right-head { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #FAFAFA; flex-shrink: 0; }
 .de-panel-right-head .ph-title { font-size: 12px; font-weight: 700; color: var(--text); }
 .de-panel-right-scroll { flex: 1; overflow-y: auto; }
 .de-panel-empty { padding: 32px 14px; text-align: center; }
@@ -454,33 +447,29 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-panel-item:hover { background: var(--bg); }
 .de-pi-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-mid); margin-top: 5px; flex-shrink: 0; }
 .de-pi-info { flex: 1; min-width: 0; }
-.de-pi-name { font-size: 12px; font-weight: 500; line-height: 1.3; color: var(--text); }
+.de-pi-name { font-size: 11px; font-weight: 500; line-height: 1.3; color: var(--text); }
 .de-pi-sku { font-size: 10px; color: var(--text-3); margin-top: 1px; }
 .de-pi-remove { background: none; border: none; cursor: pointer; color: var(--text-3); display: flex; align-items: center; padding: 2px; flex-shrink: 0; }
 .de-pi-remove:hover { color: var(--error); }
 
 /* ---- MODE 2: TABS ---- */
-.de-tabs-nav { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0 20px; background: white; }
-.de-tab {
-  padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--text-3);
-  border-bottom: 2px solid transparent; margin-bottom: -1px; background: none;
-  border-top: none; border-left: none; border-right: none;
+.de-tabs-nav { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0 20px; }
+.de-content-tab {
+  padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text-3);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  background: none; border-top: none; border-left: none; border-right: none;
   font-family: inherit; cursor: pointer; transition: all 0.15s;
   display: flex; align-items: center; gap: 6px;
 }
-.de-tab.active { color: var(--green-mid); border-bottom-color: var(--green-mid); }
-.de-tab:hover:not(.active) { color: var(--text-2); }
-.de-tab-badge { min-width: 18px; height: 18px; padding: 0 5px; background: var(--green-mid); color: white; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-.de-tab:not(.active) .de-tab-badge { background: var(--border); color: var(--text-3); }
-.de-tab-panel { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-.de-tab-panel.active { display: flex; }
-.de-tab-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-
-/* Selected tab — list of selected rows */
+.de-content-tab.active { color: var(--green-mid); border-bottom-color: var(--green-mid); }
+.de-content-tab:hover:not(.active) { color: var(--text-2); }
+.de-ctab-badge { min-width: 17px; height: 17px; padding: 0 4px; background: var(--green-mid); color: white; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.de-content-tab:not(.active) .de-ctab-badge { background: var(--border); color: var(--text-3); }
+.de-ctab-body { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
+.de-ctab-body.active { display: flex; }
 .de-sel-tab-scroll { flex: 1; overflow-y: auto; }
 .de-sel-tab-empty { padding: 60px 20px; text-align: center; }
-.de-sel-tab-empty svg { margin-bottom: 12px; }
-.de-sel-tab-empty p { font-size: 13px; color: var(--text-3); }
+.de-sel-tab-empty p { font-size: 13px; color: var(--text-3); margin-top: 10px; }
 .de-sel-row { display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-bottom: 1px solid #F3F4F6; }
 .de-sel-row:last-child { border-bottom: none; }
 .de-sel-row:hover { background: var(--bg); }
@@ -491,19 +480,13 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-sel-row-remove:hover { background: #FEE2E2; color: var(--error); }
 
 /* ---- MODE 3: PINNED TO TOP ---- */
-.de-pinned-body { flex: 1; overflow-y: auto; }
+.de-pinned-scroll { flex: 1; overflow-y: auto; }
 .de-pinned-divider { padding: 7px 12px 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); background: #F9FAFB; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 
 /* ---- MODE 4: EXPANDABLE BAR ---- */
-.de-expand-body { flex: 1; overflow-y: auto; }
-.de-expand-bar {
-  border-top: 1px solid var(--border); flex-shrink: 0; background: white;
-}
-.de-expand-toggle {
-  width: 100%; padding: 10px 20px; display: flex; align-items: center; gap: 10px;
-  background: none; border: none; font-family: inherit; cursor: pointer;
-  text-align: left; transition: background 0.15s;
-}
+.de-expand-scroll { flex: 1; overflow-y: auto; }
+.de-expand-bar { border-top: 1px solid var(--border); flex-shrink: 0; background: white; }
+.de-expand-toggle { width: 100%; padding: 10px 20px; display: flex; align-items: center; gap: 10px; background: none; border: none; font-family: inherit; cursor: pointer; text-align: left; transition: background 0.15s; }
 .de-expand-toggle:hover { background: var(--bg); }
 .de-expand-count { width: 26px; height: 26px; background: var(--green-mid); color: white; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .de-expand-count.zero { background: var(--border); color: var(--text-3); }
@@ -511,11 +494,7 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 .de-expand-text.zero { color: var(--text-3); font-weight: 400; }
 .de-expand-chevron { color: var(--text-3); transition: transform 0.2s; }
 .de-expand-chevron.open { transform: rotate(180deg); }
-.de-expand-panel {
-  overflow: hidden; max-height: 0;
-  transition: max-height 0.25s cubic-bezier(0.4,0,0.2,1);
-  border-top: 1px solid var(--border);
-}
+.de-expand-panel { overflow: hidden; max-height: 0; transition: max-height 0.25s cubic-bezier(0.4,0,0.2,1); border-top: 1px solid var(--border); }
 .de-expand-panel.open { max-height: 240px; overflow-y: auto; }
 .de-expand-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; border-bottom: 1px solid #F3F4F6; }
 .de-expand-item:last-child { border-bottom: none; }
@@ -1196,7 +1175,7 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
 
 <!-- ============================================================ -->
 <!-- DESIGN E — SELECTION VIEWS                                   -->
-<!-- 4 ways to display selected items inside the drawer           -->
+<!-- Single drawer, mode picker lives inside the header           -->
 <!-- ============================================================ -->
 <div id="design-e" class="design-frame">
   <div class="de-host">
@@ -1210,256 +1189,137 @@ input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green-mid)
       </button>
     </div>
     <div class="de-host-body">
-      <p class="de-host-hint">Choose a selection display style below, then click <strong>New product group</strong> to open the drawer.</p>
-      <div class="de-mode-cards">
-        <div class="de-mode-card active" onclick="deSetMode('panel')">
-          <div class="mc-label">Side panel</div>
-          <div class="mc-desc">Selected items in a persistent right column, always visible</div>
-        </div>
-        <div class="de-mode-card" onclick="deSetMode('tabs')">
-          <div class="mc-label">Tab switcher</div>
-          <div class="mc-desc">Switch between Browse and Selected tabs to review your picks</div>
-        </div>
-        <div class="de-mode-card" onclick="deSetMode('pinned')">
-          <div class="mc-label">Pinned to top</div>
-          <div class="mc-desc">Selected rows rise to the top of the list, grouped above a divider</div>
-        </div>
-        <div class="de-mode-card" onclick="deSetMode('expand')">
-          <div class="mc-label">Expandable bar</div>
-          <div class="mc-desc">Count badge above the footer — click to reveal full list</div>
-        </div>
-      </div>
+      <p style="font-size:13px;color:var(--text-2)">Click <strong>New product group</strong> to open the drawer. Use the switcher inside the drawer header to try different selection views.</p>
     </div>
 
     <!-- Scrim -->
     <div class="de-scrim" id="de-scrim" onclick="deClose()"></div>
 
-    <!-- ══════════════════════════════════ -->
-    <!-- MODE 1: SIDE PANEL                -->
-    <!-- ══════════════════════════════════ -->
-    <div class="de-drawer mode-panel" id="de-drawer-panel">
-      <div class="de-header">
-        <div><div class="de-header-title">Create product group</div><div class="de-header-sub">Side panel view</div></div>
-        <button class="de-close" onclick="deClose()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-      </div>
-      <div class="de-details">
-        <div><label>Group name</label><input class="de-inp" type="text" value="Premium Dairy Products" placeholder="Group name"></div>
-        <div><label>Description</label><input class="de-inp" type="text" placeholder="Optional description"></div>
-      </div>
-      <!-- Split body -->
-      <div class="de-panel-body">
-        <!-- Left: catalog -->
-        <div class="de-panel-left">
-          <div class="de-search-row">
-            <div class="search-wrap" style="flex:1">
-              <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              <input class="search-input" id="de-p-search" type="text" placeholder="Search…" oninput="deRender('panel')" style="font-size:12px;padding-top:7px;padding-bottom:7px">
-            </div>
-            <button class="upload-btn" style="font-size:11px;padding:6px 10px" onclick="showToast('CSV uploaded — 8 products added','success')">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              CSV
-            </button>
-          </div>
-          <div class="de-cat-row" id="de-p-cats">
-            <button class="cat-chip active" data-cat="" onclick="deCat(this,'panel')">All</button>
-            <button class="cat-chip" data-cat="dairy" onclick="deCat(this,'panel')">Dairy</button>
-            <button class="cat-chip" data-cat="produce" onclick="deCat(this,'panel')">Produce</button>
-            <button class="cat-chip" data-cat="protein" onclick="deCat(this,'panel')">Protein</button>
-            <button class="cat-chip" data-cat="bakery" onclick="deCat(this,'panel')">Bakery</button>
-            <button class="cat-chip" data-cat="beverages" onclick="deCat(this,'panel')">Beverages</button>
-            <button class="cat-chip" data-cat="pantry" onclick="deCat(this,'panel')">Pantry</button>
-          </div>
-          <div class="de-panel-scroll">
-            <table class="de-tbl"><thead><tr><th class="chk"><input type="checkbox" onchange="deSelectAll(this,'panel')"></th><th>Product</th><th>Cat.</th><th>Price</th></tr></thead><tbody id="de-p-tbody"></tbody></table>
-          </div>
-        </div>
-        <!-- Right: selected panel -->
-        <div class="de-panel-right">
-          <div class="de-panel-right-head">
-            <span class="ph-title">Selected <span id="de-p-count" style="color:var(--green-mid)">0</span></span>
-            <button class="btn-danger-ghost" onclick="deClearAll('panel')" style="font-size:11px;padding:2px 7px" id="de-p-clear" style="display:none">Clear</button>
-          </div>
-          <div class="de-panel-right-scroll" id="de-p-sellist">
-            <div class="de-panel-empty"><p>Select products from<br>the catalog</p></div>
-          </div>
-        </div>
-      </div>
-      <div class="de-footer">
-        <span class="de-footer-hint" id="de-p-hint">0 products selected</span>
-        <div class="de-footer-actions">
-          <button class="btn btn-secondary" onclick="deClose()" style="font-size:13px;padding:7px 16px">Cancel</button>
-          <button class="btn btn-primary" id="de-p-save" disabled onclick="deSave('panel')" style="font-size:13px;padding:7px 16px">Create group</button>
-        </div>
-      </div>
-    </div>
+    <!-- Single drawer -->
+    <div class="de-drawer" id="de-drawer">
 
-    <!-- ══════════════════════════════════ -->
-    <!-- MODE 2: TAB SWITCHER              -->
-    <!-- ══════════════════════════════════ -->
-    <div class="de-drawer mode-tabs" id="de-drawer-tabs">
+      <!-- Header with inline mode switcher -->
       <div class="de-header">
-        <div><div class="de-header-title">Create product group</div><div class="de-header-sub">Tab switcher view</div></div>
-        <button class="de-close" onclick="deClose()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <span class="de-header-title">Create product group</span>
+        <div class="de-seg" id="de-seg">
+          <button class="de-seg-btn active" data-mode="panel" onclick="deSetMode('panel')">Side panel</button>
+          <button class="de-seg-btn" data-mode="tabs" onclick="deSetMode('tabs')">
+            Tabs <span class="de-seg-count" id="de-seg-count" style="background:var(--border);color:var(--text-3)">0</span>
+          </button>
+          <button class="de-seg-btn" data-mode="pinned" onclick="deSetMode('pinned')">Pinned</button>
+          <button class="de-seg-btn" data-mode="expand" onclick="deSetMode('expand')">Expandable</button>
+        </div>
+        <button class="de-close" onclick="deClose()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
       </div>
+
+      <!-- Group details -->
       <div class="de-details">
         <div><label>Group name</label><input class="de-inp" type="text" value="Premium Dairy Products" placeholder="Group name"></div>
         <div><label>Description</label><input class="de-inp" type="text" placeholder="Optional description"></div>
       </div>
-      <!-- Tabs -->
-      <div class="de-tabs-nav">
-        <button class="de-tab active" id="de-t-tab-browse" onclick="deTabSwitch('browse')">
-          All products <span id="de-t-browse-count" class="de-tab-badge" style="background:var(--border);color:var(--text-3)">32</span>
-        </button>
-        <button class="de-tab" id="de-t-tab-selected" onclick="deTabSwitch('selected')">
-          Selected <span id="de-t-sel-badge" class="de-tab-badge" style="background:var(--border);color:var(--text-3)">0</span>
-        </button>
-      </div>
-      <!-- Browse tab -->
-      <div class="de-tab-panel active" id="de-t-browse-panel">
-        <div class="de-tab-body">
-          <div class="de-search-row">
-            <div class="search-wrap" style="flex:1">
-              <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              <input class="search-input" id="de-t-search" type="text" placeholder="Search by name or SKU…" oninput="deRender('tabs')" style="font-size:12px;padding-top:7px;padding-bottom:7px">
+
+      <!-- ── MODE: SIDE PANEL ── -->
+      <div class="de-mode-section active" id="de-sec-panel">
+        <div class="de-panel-body">
+          <div class="de-panel-left">
+            <div class="de-search-row">
+              <div class="search-wrap" style="flex:1">
+                <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <input class="search-input" id="de-search" type="text" placeholder="Search by name or SKU…" oninput="deFilter()" style="font-size:12px;padding-top:7px;padding-bottom:7px">
+              </div>
+              <button class="upload-btn" style="font-size:11px;padding:6px 10px" onclick="showToast('CSV uploaded — 8 products added','success')">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                CSV
+              </button>
             </div>
-            <button class="upload-btn" style="font-size:11px;padding:6px 10px" onclick="showToast('CSV uploaded — 8 products added','success')">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              CSV
-            </button>
+            <div class="de-cat-row" id="de-cats">
+              <button class="cat-chip active" data-cat="" onclick="deCatClick(this)">All</button>
+              <button class="cat-chip" data-cat="dairy" onclick="deCatClick(this)">Dairy</button>
+              <button class="cat-chip" data-cat="produce" onclick="deCatClick(this)">Produce</button>
+              <button class="cat-chip" data-cat="protein" onclick="deCatClick(this)">Protein</button>
+              <button class="cat-chip" data-cat="bakery" onclick="deCatClick(this)">Bakery</button>
+              <button class="cat-chip" data-cat="beverages" onclick="deCatClick(this)">Beverages</button>
+              <button class="cat-chip" data-cat="pantry" onclick="deCatClick(this)">Pantry</button>
+            </div>
+            <div class="de-panel-scroll">
+              <table class="de-tbl"><thead><tr><th class="chk"><input type="checkbox" id="de-chk-all" onchange="deSelectAll(this)"></th><th>Product</th><th>Cat.</th><th>Price</th></tr></thead><tbody id="de-tbody"></tbody></table>
+            </div>
           </div>
-          <div class="de-cat-row" id="de-t-cats">
-            <button class="cat-chip active" data-cat="" onclick="deCat(this,'tabs')">All</button>
-            <button class="cat-chip" data-cat="dairy" onclick="deCat(this,'tabs')">Dairy</button>
-            <button class="cat-chip" data-cat="produce" onclick="deCat(this,'tabs')">Produce</button>
-            <button class="cat-chip" data-cat="protein" onclick="deCat(this,'tabs')">Protein</button>
-            <button class="cat-chip" data-cat="bakery" onclick="deCat(this,'tabs')">Bakery</button>
-            <button class="cat-chip" data-cat="beverages" onclick="deCat(this,'tabs')">Beverages</button>
-            <button class="cat-chip" data-cat="pantry" onclick="deCat(this,'tabs')">Pantry</button>
-          </div>
-          <div style="flex:1;overflow-y:auto">
-            <table class="de-tbl"><thead><tr><th class="chk"><input type="checkbox" onchange="deSelectAll(this,'tabs')"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-t-tbody"></tbody></table>
+          <div class="de-panel-right">
+            <div class="de-panel-right-head">
+              <span class="ph-title">Selected <span id="de-panel-count" style="color:var(--green-mid)">0</span></span>
+              <button class="btn-danger-ghost" id="de-panel-clear" onclick="deClearAll()" style="font-size:11px;padding:2px 7px;display:none">Clear</button>
+            </div>
+            <div class="de-panel-right-scroll" id="de-panel-list">
+              <div class="de-panel-empty"><p>Select products from<br>the catalog</p></div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Selected tab -->
-      <div class="de-tab-panel" id="de-t-selected-panel">
-        <div class="de-tab-body">
-          <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#FAFAFA">
-            <span style="font-size:12px;color:var(--text-3)" id="de-t-sel-summary">No products selected yet</span>
-            <button class="btn-danger-ghost" onclick="deClearAll('tabs')" style="font-size:11px;padding:3px 8px" id="de-t-clear">Clear all</button>
+
+      <!-- ── MODE: TABS ── -->
+      <div class="de-mode-section" id="de-sec-tabs">
+        <div class="de-tabs-nav">
+          <button class="de-content-tab active" id="de-ctab-browse" onclick="deContentTab('browse')">
+            All products <span class="de-ctab-badge" id="de-ctab-all-count" style="background:var(--border);color:var(--text-3)">36</span>
+          </button>
+          <button class="de-content-tab" id="de-ctab-sel" onclick="deContentTab('selected')">
+            Selected <span class="de-ctab-badge" id="de-ctab-sel-count" style="background:var(--border);color:var(--text-3)">0</span>
+          </button>
+        </div>
+        <div class="de-ctab-body active" id="de-ctab-browse-body">
+          <div style="flex:1;overflow-y:auto">
+            <table class="de-tbl"><thead><tr><th class="chk"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-tab-tbody"></tbody></table>
           </div>
-          <div class="de-sel-tab-scroll" id="de-t-sellist">
+        </div>
+        <div class="de-ctab-body" id="de-ctab-sel-body">
+          <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#FAFAFA">
+            <span style="font-size:12px;color:var(--text-3)" id="de-tab-sel-summary">No products selected yet</span>
+            <button class="btn-danger-ghost" onclick="deClearAll()" style="font-size:11px;padding:3px 8px">Clear all</button>
+          </div>
+          <div class="de-sel-tab-scroll" id="de-tab-sellist">
             <div class="de-sel-tab-empty">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#D1D5DB" stroke-width="1.5"/><path d="M10 16h12M16 10v12" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round"/></svg>
-              <p>No products selected yet.<br>Go to All products to add some.</p>
+              <p>No products selected yet.<br>Switch to All products to add some.</p>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- ── MODE: PINNED ── -->
+      <div class="de-mode-section" id="de-sec-pinned">
+        <div class="de-pinned-scroll">
+          <table class="de-tbl"><thead><tr><th class="chk"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-pinned-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── MODE: EXPANDABLE ── -->
+      <div class="de-mode-section" id="de-sec-expand">
+        <div class="de-expand-scroll">
+          <table class="de-tbl"><thead><tr><th class="chk"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-expand-tbody"></tbody></table>
+        </div>
+        <div class="de-expand-bar">
+          <button class="de-expand-toggle" onclick="deToggleExpand()">
+            <div class="de-expand-count zero" id="de-expand-count">0</div>
+            <span class="de-expand-text zero" id="de-expand-text">No products selected</span>
+            <svg class="de-expand-chevron" id="de-expand-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5.5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="de-expand-panel" id="de-expand-panel"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
       <div class="de-footer">
-        <span class="de-footer-hint" id="de-t-hint">0 products selected</span>
+        <span class="de-footer-hint" id="de-footer-hint">0 products selected</span>
         <div class="de-footer-actions">
           <button class="btn btn-secondary" onclick="deClose()" style="font-size:13px;padding:7px 16px">Cancel</button>
-          <button class="btn btn-primary" id="de-t-save" disabled onclick="deSave('tabs')" style="font-size:13px;padding:7px 16px">Create group</button>
+          <button class="btn btn-primary" id="de-save" disabled onclick="deSave()" style="font-size:13px;padding:7px 16px">Create group</button>
         </div>
       </div>
-    </div>
 
-    <!-- ══════════════════════════════════ -->
-    <!-- MODE 3: PINNED TO TOP             -->
-    <!-- ══════════════════════════════════ -->
-    <div class="de-drawer mode-pinned" id="de-drawer-pinned">
-      <div class="de-header">
-        <div><div class="de-header-title">Create product group</div><div class="de-header-sub">Pinned to top view</div></div>
-        <button class="de-close" onclick="deClose()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-      </div>
-      <div class="de-details">
-        <div><label>Group name</label><input class="de-inp" type="text" value="Premium Dairy Products" placeholder="Group name"></div>
-        <div><label>Description</label><input class="de-inp" type="text" placeholder="Optional description"></div>
-      </div>
-      <div class="de-search-row">
-        <div class="search-wrap" style="flex:1">
-          <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input class="search-input" id="de-n-search" type="text" placeholder="Search by name or SKU…" oninput="deRender('pinned')" style="font-size:12px;padding-top:7px;padding-bottom:7px">
-        </div>
-        <button class="upload-btn" style="font-size:11px;padding:6px 10px" onclick="showToast('CSV uploaded — 8 products added','success')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          CSV
-        </button>
-      </div>
-      <div class="de-cat-row" id="de-n-cats">
-        <button class="cat-chip active" data-cat="" onclick="deCat(this,'pinned')">All</button>
-        <button class="cat-chip" data-cat="dairy" onclick="deCat(this,'pinned')">Dairy</button>
-        <button class="cat-chip" data-cat="produce" onclick="deCat(this,'pinned')">Produce</button>
-        <button class="cat-chip" data-cat="protein" onclick="deCat(this,'pinned')">Protein</button>
-        <button class="cat-chip" data-cat="bakery" onclick="deCat(this,'pinned')">Bakery</button>
-        <button class="cat-chip" data-cat="beverages" onclick="deCat(this,'pinned')">Beverages</button>
-        <button class="cat-chip" data-cat="pantry" onclick="deCat(this,'pinned')">Pantry</button>
-      </div>
-      <div class="de-pinned-body">
-        <table class="de-tbl"><thead><tr><th class="chk"><input type="checkbox" onchange="deSelectAll(this,'pinned')"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-n-tbody"></tbody></table>
-      </div>
-      <div class="de-footer">
-        <span class="de-footer-hint" id="de-n-hint">0 products selected</span>
-        <div class="de-footer-actions">
-          <button class="btn btn-secondary" onclick="deClose()" style="font-size:13px;padding:7px 16px">Cancel</button>
-          <button class="btn btn-primary" id="de-n-save" disabled onclick="deSave('pinned')" style="font-size:13px;padding:7px 16px">Create group</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════ -->
-    <!-- MODE 4: EXPANDABLE BAR            -->
-    <!-- ══════════════════════════════════ -->
-    <div class="de-drawer mode-expand" id="de-drawer-expand">
-      <div class="de-header">
-        <div><div class="de-header-title">Create product group</div><div class="de-header-sub">Expandable bar view</div></div>
-        <button class="de-close" onclick="deClose()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2l-10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-      </div>
-      <div class="de-details">
-        <div><label>Group name</label><input class="de-inp" type="text" value="Premium Dairy Products" placeholder="Group name"></div>
-        <div><label>Description</label><input class="de-inp" type="text" placeholder="Optional description"></div>
-      </div>
-      <div class="de-search-row">
-        <div class="search-wrap" style="flex:1">
-          <svg class="search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.5l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input class="search-input" id="de-x-search" type="text" placeholder="Search by name or SKU…" oninput="deRender('expand')" style="font-size:12px;padding-top:7px;padding-bottom:7px">
-        </div>
-        <button class="upload-btn" style="font-size:11px;padding:6px 10px" onclick="showToast('CSV uploaded — 8 products added','success')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          CSV
-        </button>
-      </div>
-      <div class="de-cat-row" id="de-x-cats">
-        <button class="cat-chip active" data-cat="" onclick="deCat(this,'expand')">All</button>
-        <button class="cat-chip" data-cat="dairy" onclick="deCat(this,'expand')">Dairy</button>
-        <button class="cat-chip" data-cat="produce" onclick="deCat(this,'expand')">Produce</button>
-        <button class="cat-chip" data-cat="protein" onclick="deCat(this,'expand')">Protein</button>
-        <button class="cat-chip" data-cat="bakery" onclick="deCat(this,'expand')">Bakery</button>
-        <button class="cat-chip" data-cat="beverages" onclick="deCat(this,'expand')">Beverages</button>
-        <button class="cat-chip" data-cat="pantry" onclick="deCat(this,'expand')">Pantry</button>
-      </div>
-      <div class="de-expand-body">
-        <table class="de-tbl"><thead><tr><th class="chk"><input type="checkbox" onchange="deSelectAll(this,'expand')"></th><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody id="de-x-tbody"></tbody></table>
-      </div>
-      <!-- Expandable bar -->
-      <div class="de-expand-bar">
-        <button class="de-expand-toggle" onclick="deToggleExpand()">
-          <div class="de-expand-count zero" id="de-x-count">0</div>
-          <span class="de-expand-text zero" id="de-x-text">No products selected</span>
-          <svg class="de-expand-chevron" id="de-x-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5.5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="de-expand-panel" id="de-x-panel"></div>
-      </div>
-      <div class="de-footer">
-        <button class="btn-danger-ghost" onclick="deClearAll('expand')" id="de-x-clear" style="font-size:12px;display:none">Remove all</button>
-        <div class="de-footer-actions" style="margin-left:auto">
-          <button class="btn btn-secondary" onclick="deClose()" style="font-size:13px;padding:7px 16px">Cancel</button>
-          <button class="btn btn-primary" id="de-x-save" disabled onclick="deSave('expand')" style="font-size:13px;padding:7px 16px">Create group</button>
-        </div>
-      </div>
-    </div>
-
+    </div><!-- /de-drawer -->
   </div><!-- /de-host -->
 </div>
 
@@ -1805,209 +1665,179 @@ function ddSave(){
 
 // ==============================
 // DESIGN E — SELECTION VIEWS
+// Single drawer, shared state, in-drawer mode switcher
 // ==============================
-const deState = {
-  panel:  { selected: new Set(), cat: '', query: '' },
-  tabs:   { selected: new Set(), cat: '', query: '', activeTab: 'browse' },
-  pinned: { selected: new Set(), cat: '', query: '' },
-  expand: { selected: new Set(), cat: '', query: '', expandOpen: false },
-};
-let deActiveMode = 'panel';
+let deSelected  = new Set();
+let deCat_      = '';
+let deQuery_    = '';
+let deMode_     = 'panel';
+let deExpOpen   = false;
+let deTabActive = 'browse';
 
-const deSearchId  = { panel:'de-p-search', tabs:'de-t-search', pinned:'de-n-search', expand:'de-x-search' };
-const deCatsId    = { panel:'de-p-cats',   tabs:'de-t-cats',   pinned:'de-n-cats',   expand:'de-x-cats'   };
-const deTbodyId   = { panel:'de-p-tbody',  tabs:'de-t-tbody',  pinned:'de-n-tbody',  expand:'de-x-tbody'  };
-
-function deFiltered(mode){
-  const s = deState[mode];
+function deFiltered(){
   return PRODUCTS.filter(p =>
-    (!s.cat || p.cat === s.cat) &&
-    (!s.query || p.name.toLowerCase().includes(s.query) || p.sku.toLowerCase().includes(s.query))
+    (!deCat_ || p.cat === deCat_) &&
+    (!deQuery_ || p.name.toLowerCase().includes(deQuery_) || p.sku.toLowerCase().includes(deQuery_))
   );
 }
 
-function deRender(mode){
-  const s = deState[mode];
-  const q = document.getElementById(deSearchId[mode]);
-  if(q) s.query = q.value.toLowerCase();
-  const filtered = deFiltered(mode);
-
-  if(mode === 'panel'){
-    // Table
-    document.getElementById('de-p-tbody').innerHTML = filtered.map(p=>deTr(p, s.selected.has(p.id), 'panel')).join('');
-    // Right panel
-    const count = s.selected.size;
-    document.getElementById('de-p-count').textContent = count;
-    document.getElementById('de-p-hint').textContent = count ? `${count} product${count>1?'s':''} will be added` : '0 products selected';
-    document.getElementById('de-p-save').disabled = count === 0;
-    document.getElementById('de-p-clear').style.display = count ? '' : 'none';
-    const selList = document.getElementById('de-p-sellist');
-    if(count === 0){
-      selList.innerHTML = '<div class="de-panel-empty"><p>Select products from<br>the catalog</p></div>';
-    } else {
-      selList.innerHTML = [...s.selected].map(id => {
-        const p = PRODUCTS.find(x=>x.id===id);
-        return `<div class="de-panel-item">
-          <div class="de-pi-dot"></div>
-          <div class="de-pi-info"><div class="de-pi-name">${p.name}</div><div class="de-pi-sku">${p.sku}</div></div>
-          <button class="de-pi-remove" onclick="deToggle('${p.id}','panel')" title="Remove">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-          </button>
-        </div>`;
-      }).join('');
-    }
-  }
-
-  else if(mode === 'tabs'){
-    const count = s.selected.size;
-    // Browse table
-    document.getElementById('de-t-tbody').innerHTML = filtered.map(p=>deTr(p, s.selected.has(p.id), 'tabs')).join('');
-    document.getElementById('de-t-browse-count').textContent = filtered.length;
-    // Selected tab badge
-    const badge = document.getElementById('de-t-sel-badge');
-    badge.textContent = count;
-    badge.style.background = count > 0 ? 'var(--green-mid)' : 'var(--border)';
-    badge.style.color = count > 0 ? 'white' : 'var(--text-3)';
-    document.getElementById('de-t-hint').textContent = count ? `${count} product${count>1?'s':''} will be added` : '0 products selected';
-    document.getElementById('de-t-save').disabled = count === 0;
-    // Selected tab summary
-    document.getElementById('de-t-sel-summary').textContent = count ? `${count} product${count>1?'s':''} selected` : 'No products selected yet';
-    const selList = document.getElementById('de-t-sellist');
-    if(count === 0){
-      selList.innerHTML = '<div class="de-sel-tab-empty"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#D1D5DB" stroke-width="1.5"/><path d="M10 16h12M16 10v12" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round"/></svg><p>No products selected yet.<br>Go to All products to add some.</p></div>';
-    } else {
-      selList.innerHTML = [...s.selected].map(id => {
-        const p = PRODUCTS.find(x=>x.id===id);
-        return `<div class="de-sel-row">
-          <div class="de-sel-row-info"><div class="de-sel-row-name">${p.name}</div><div class="de-sel-row-sku">${p.sku} · <span class="cat-badge ${p.cat}" style="font-size:10px">${catLabel(p.cat)}</span></div></div>
-          <span style="font-size:12px;font-weight:600;color:var(--text);margin-right:4px">$${p.price.toFixed(2)}</span>
-          <button class="de-sel-row-remove" onclick="deToggle('${p.id}','tabs')" title="Remove">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-          </button>
-        </div>`;
-      }).join('');
-    }
-  }
-
-  else if(mode === 'pinned'){
-    const count = s.selected.size;
-    document.getElementById('de-n-hint').textContent = count ? `${count} product${count>1?'s':''} will be added` : '0 products selected';
-    document.getElementById('de-n-save').disabled = count === 0;
-    const tbody = document.getElementById('de-n-tbody');
-    const selectedProds = PRODUCTS.filter(p => s.selected.has(p.id));
-    const unselectedFiltered = filtered.filter(p => !s.selected.has(p.id));
-    let rows = '';
-    if(selectedProds.length > 0){
-      rows += `<tr><td colspan="4" style="padding:0"><div class="de-pinned-divider"><span>Selected (${selectedProds.length})</span><button class="btn-danger-ghost" onclick="deClearAll('pinned')" style="font-size:10px;padding:2px 8px">Remove all</button></div></td></tr>`;
-      rows += selectedProds.map(p=>`<tr class="sel" onclick="deToggle('${p.id}','pinned')">
-        <td class="chk"><input type="checkbox" checked onchange="deToggle('${p.id}','pinned')" onclick="event.stopPropagation()"></td>
-        <td><div class="pn">${p.name}</div><div class="ps">${p.sku}</div></td>
-        <td><span class="cat-badge ${p.cat}" style="font-size:10px">${catLabel(p.cat)}</span></td>
-        <td style="font-weight:600;font-size:12px">$${p.price.toFixed(2)}</td>
-      </tr>`).join('');
-      if(unselectedFiltered.length > 0){
-        rows += `<tr><td colspan="4" style="padding:0"><div class="de-pinned-divider" style="border-top:none"><span>All products (${unselectedFiltered.length})</span></div></td></tr>`;
-      }
-    }
-    rows += unselectedFiltered.map(p=>deTr(p, false, 'pinned')).join('');
-    tbody.innerHTML = rows;
-  }
-
-  else if(mode === 'expand'){
-    const count = s.selected.size;
-    document.getElementById('de-x-tbody').innerHTML = filtered.map(p=>deTr(p, s.selected.has(p.id), 'expand')).join('');
-    const countEl = document.getElementById('de-x-count');
-    const textEl  = document.getElementById('de-x-text');
-    countEl.textContent = count;
-    countEl.className = `de-expand-count${count===0?' zero':''}`;
-    textEl.textContent = count === 0 ? 'No products selected' : `${count} product${count>1?'s':''} selected — click to review`;
-    textEl.className = `de-expand-text${count===0?' zero':''}`;
-    document.getElementById('de-x-save').disabled = count === 0;
-    document.getElementById('de-x-clear').style.display = count ? '' : 'none';
-    // Panel items
-    document.getElementById('de-x-panel').innerHTML = [...s.selected].map((id, i) => {
-      const p = PRODUCTS.find(x=>x.id===id);
-      return `<div class="de-expand-item">
-        <div class="de-expand-item-num">${i+1}</div>
-        <div class="de-expand-item-info"><div class="de-expand-item-name">${p.name}</div><div class="de-expand-item-sku">${p.sku}</div></div>
-        <span style="font-size:11px;font-weight:600;color:var(--text);margin-right:6px">$${p.price.toFixed(2)}</span>
-        <button class="de-expand-item-remove" onclick="deToggle('${p.id}','expand')" title="Remove">
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        </button>
-      </div>`;
-    }).join('');
-    if(count === 0 && s.expandOpen) deToggleExpand(true);
-  }
-}
-
-function deTr(p, checked, mode){
-  return `<tr class="${checked?'sel':''}" onclick="deToggle('${p.id}','${mode}')">
-    <td class="chk"><input type="checkbox" ${checked?'checked':''} onchange="deToggle('${p.id}','${mode}')" onclick="event.stopPropagation()"></td>
+function deTr(p){
+  const sel = deSelected.has(p.id);
+  return `<tr class="${sel?'sel':''}" onclick="deToggle('${p.id}')">
+    <td class="chk"><input type="checkbox" ${sel?'checked':''} onchange="deToggle('${p.id}')" onclick="event.stopPropagation()"></td>
     <td><div class="pn">${p.name}</div><div class="ps">${p.sku}</div></td>
     <td><span class="cat-badge ${p.cat}" style="font-size:10px">${catLabel(p.cat)}</span></td>
     <td style="font-weight:600;font-size:12px">$${p.price.toFixed(2)}</td>
   </tr>`;
 }
 
-function deToggle(id, mode){
-  const s = deState[mode];
-  if(s.selected.has(id)) s.selected.delete(id); else s.selected.add(id);
-  deRender(mode);
-}
-function deClearAll(mode){ deState[mode].selected.clear(); deRender(mode); }
-function deCat(btn, mode){
-  const containerId = deCatsId[mode];
-  document.querySelectorAll(`#${containerId} .cat-chip`).forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  deState[mode].cat = btn.dataset.cat;
-  deRender(mode);
-}
-function deSelectAll(cb, mode){
-  deFiltered(mode).forEach(p=>{ if(cb.checked) deState[mode].selected.add(p.id); else deState[mode].selected.delete(p.id); });
-  deRender(mode);
+function deRenderAll(){
+  const filtered = deFiltered();
+  const count = deSelected.size;
+  const hint = count ? `${count} product${count>1?'s':''} will be added` : '0 products selected';
+
+  // Footer
+  document.getElementById('de-footer-hint').textContent = hint;
+  document.getElementById('de-save').disabled = count === 0;
+
+  // Seg-control count badge
+  const badge = document.getElementById('de-seg-count');
+  badge.textContent = count;
+  badge.style.background = count > 0 ? 'var(--green-mid)' : 'var(--border)';
+  badge.style.color = count > 0 ? 'white' : 'var(--text-3)';
+
+  // Width: wider for side panel
+  document.getElementById('de-drawer').classList.toggle('mode-panel', deMode_==='panel');
+
+  // Show correct section
+  ['panel','tabs','pinned','expand'].forEach(m => {
+    document.getElementById(`de-sec-${m}`).classList.toggle('active', m===deMode_);
+  });
+
+  if(deMode_ === 'panel'){
+    document.getElementById('de-tbody').innerHTML = filtered.map(deTr).join('');
+    document.getElementById('de-panel-count').textContent = count;
+    document.getElementById('de-panel-clear').style.display = count ? '' : 'none';
+    const selList = document.getElementById('de-panel-list');
+    selList.innerHTML = count === 0
+      ? '<div class="de-panel-empty"><p>Select products from<br>the catalog</p></div>'
+      : [...deSelected].map(id => {
+          const p = PRODUCTS.find(x=>x.id===id);
+          return `<div class="de-panel-item">
+            <div class="de-pi-dot"></div>
+            <div class="de-pi-info"><div class="de-pi-name">${p.name}</div><div class="de-pi-sku">${p.sku}</div></div>
+            <button class="de-pi-remove" onclick="deToggle('${p.id}')" title="Remove">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </button>
+          </div>`;
+        }).join('');
+  }
+
+  else if(deMode_ === 'tabs'){
+    document.getElementById('de-tab-tbody').innerHTML = filtered.map(deTr).join('');
+    const allBadge = document.getElementById('de-ctab-all-count');
+    allBadge.textContent = filtered.length;
+    const selBadge = document.getElementById('de-ctab-sel-count');
+    selBadge.textContent = count;
+    selBadge.style.background = count > 0 ? 'var(--green-mid)' : 'var(--border)';
+    selBadge.style.color = count > 0 ? 'white' : 'var(--text-3)';
+    document.getElementById('de-tab-sel-summary').textContent = count
+      ? `${count} product${count>1?'s':''} selected`
+      : 'No products selected yet';
+    const selList = document.getElementById('de-tab-sellist');
+    selList.innerHTML = count === 0
+      ? `<div class="de-sel-tab-empty"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#D1D5DB" stroke-width="1.5"/><path d="M10 16h12M16 10v12" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round"/></svg><p>No products selected yet.<br>Switch to All products to add some.</p></div>`
+      : [...deSelected].map(id => {
+          const p = PRODUCTS.find(x=>x.id===id);
+          return `<div class="de-sel-row">
+            <div class="de-sel-row-info"><div class="de-sel-row-name">${p.name}</div><div class="de-sel-row-sku">${p.sku} · <span class="cat-badge ${p.cat}" style="font-size:10px">${catLabel(p.cat)}</span></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--text);margin-right:4px">$${p.price.toFixed(2)}</span>
+            <button class="de-sel-row-remove" onclick="deToggle('${p.id}')" title="Remove">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </button>
+          </div>`;
+        }).join('');
+  }
+
+  else if(deMode_ === 'pinned'){
+    const selProds = PRODUCTS.filter(p => deSelected.has(p.id));
+    const rest = filtered.filter(p => !deSelected.has(p.id));
+    let rows = '';
+    if(selProds.length > 0){
+      rows += `<tr><td colspan="4" style="padding:0"><div class="de-pinned-divider"><span>Selected (${selProds.length})</span><button class="btn-danger-ghost" onclick="deClearAll()" style="font-size:10px;padding:2px 8px">Remove all</button></div></td></tr>`;
+      rows += selProds.map(deTr).join('');
+      if(rest.length) rows += `<tr><td colspan="4" style="padding:0"><div class="de-pinned-divider" style="border-top:none"><span>All products (${rest.length})</span></div></td></tr>`;
+    }
+    rows += rest.map(deTr).join('');
+    document.getElementById('de-pinned-tbody').innerHTML = rows;
+  }
+
+  else if(deMode_ === 'expand'){
+    document.getElementById('de-expand-tbody').innerHTML = filtered.map(deTr).join('');
+    const countEl = document.getElementById('de-expand-count');
+    const textEl  = document.getElementById('de-expand-text');
+    countEl.textContent = count;
+    countEl.className = `de-expand-count${count===0?' zero':''}`;
+    textEl.textContent = count === 0 ? 'No products selected' : `${count} product${count>1?'s':''} selected — click to review`;
+    textEl.className = `de-expand-text${count===0?' zero':''}`;
+    document.getElementById('de-expand-panel').innerHTML = [...deSelected].map((id,i)=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      return `<div class="de-expand-item">
+        <div class="de-expand-item-num">${i+1}</div>
+        <div class="de-expand-item-info"><div class="de-expand-item-name">${p.name}</div><div class="de-expand-item-sku">${p.sku}</div></div>
+        <span style="font-size:11px;font-weight:600;color:var(--text);margin-right:6px">$${p.price.toFixed(2)}</span>
+        <button class="de-expand-item-remove" onclick="deToggle('${p.id}')" title="Remove">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>`;
+    }).join('');
+    if(count === 0 && deExpOpen){ deExpOpen=false; document.getElementById('de-expand-panel').classList.remove('open'); document.getElementById('de-expand-chevron').classList.remove('open'); }
+  }
 }
 
-function deTabSwitch(tab){
-  deState.tabs.activeTab = tab;
-  document.getElementById('de-t-tab-browse').classList.toggle('active', tab==='browse');
-  document.getElementById('de-t-tab-selected').classList.toggle('active', tab==='selected');
-  document.getElementById('de-t-browse-panel').classList.toggle('active', tab==='browse');
-  document.getElementById('de-t-selected-panel').classList.toggle('active', tab==='selected');
+function deToggle(id){ if(deSelected.has(id)) deSelected.delete(id); else deSelected.add(id); deRenderAll(); }
+function deClearAll(){ deSelected.clear(); deRenderAll(); }
+function deFilter(){ deQuery_=document.getElementById('de-search').value.toLowerCase(); deRenderAll(); }
+function deCatClick(btn){
+  document.querySelectorAll('#de-cats .cat-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); deCat_=btn.dataset.cat; deRenderAll();
+}
+function deSelectAll(cb){ deFiltered().forEach(p=>{ if(cb.checked) deSelected.add(p.id); else deSelected.delete(p.id); }); deRenderAll(); }
+
+function deContentTab(tab){
+  deTabActive = tab;
+  document.getElementById('de-ctab-browse').classList.toggle('active', tab==='browse');
+  document.getElementById('de-ctab-sel').classList.toggle('active', tab==='selected');
+  document.getElementById('de-ctab-browse-body').classList.toggle('active', tab==='browse');
+  document.getElementById('de-ctab-sel-body').classList.toggle('active', tab==='selected');
 }
 
-function deToggleExpand(forceClose){
-  const s = deState.expand;
-  if(forceClose){ s.expandOpen = false; }
-  else { s.expandOpen = !s.expandOpen; }
-  document.getElementById('de-x-panel').classList.toggle('open', s.expandOpen);
-  document.getElementById('de-x-chevron').classList.toggle('open', s.expandOpen);
+function deToggleExpand(){
+  deExpOpen = !deExpOpen;
+  document.getElementById('de-expand-panel').classList.toggle('open', deExpOpen);
+  document.getElementById('de-expand-chevron').classList.toggle('open', deExpOpen);
 }
 
 function deSetMode(mode){
-  deActiveMode = mode;
-  document.querySelectorAll('.de-mode-card').forEach((c,i)=>c.classList.toggle('active', ['panel','tabs','pinned','expand'][i]===mode));
+  deMode_ = mode;
+  document.querySelectorAll('#de-seg .de-seg-btn').forEach(b => b.classList.toggle('active', b.dataset.mode===mode));
+  deRenderAll();
 }
 
 function deOpen(){
-  const drawers = ['panel','tabs','pinned','expand'];
-  drawers.forEach(m => {
-    const el = document.getElementById(`de-drawer-${m}`);
-    el.classList.toggle('open', m === deActiveMode);
-  });
+  document.getElementById('de-drawer').classList.add('open');
   document.getElementById('de-scrim').classList.add('visible');
-  deRender(deActiveMode);
+  deRenderAll();
 }
 
 function deClose(){
-  ['panel','tabs','pinned','expand'].forEach(m => document.getElementById(`de-drawer-${m}`).classList.remove('open'));
+  document.getElementById('de-drawer').classList.remove('open');
   document.getElementById('de-scrim').classList.remove('visible');
 }
 
-function deSave(mode){
-  showToast(`Group created with ${deState[mode].selected.size} products`, 'success');
-  deState[mode].selected.clear();
-  deClose();
-  deRender(mode);
+function deSave(){
+  showToast(`Group created with ${deSelected.size} products`, 'success');
+  deSelected.clear(); deClose(); deRenderAll();
 }
 
 // ==============================
@@ -2041,7 +1871,7 @@ daRender();
 dbRender();
 dcRender();
 ddRender();
-['panel','tabs','pinned','expand'].forEach(m => deRender(m));
+// Design E renders on open, nothing to init
 </script>
 </body>
 </html>
