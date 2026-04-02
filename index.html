@@ -1492,7 +1492,16 @@ function renderProductsDropdown() {
   if(allItem) allItem.classList.toggle('selected', selectedProduct === 'all');
 }
 
+// Move dropdown to body on first use so transform ancestors don't affect fixed positioning
+function _ensureDropdownInBody() {
+  const menu = document.getElementById('products-dropdown');
+  if (menu.parentElement !== document.body) {
+    document.body.appendChild(menu);
+  }
+}
+
 function toggleProductsDropdown() {
+  _ensureDropdownInBody();
   const trigger = document.getElementById('products-trigger');
   const menu = document.getElementById('products-dropdown');
   const isOpen = menu.classList.contains('open');
@@ -1506,8 +1515,10 @@ function toggleProductsDropdown() {
   trigger.classList.toggle('open', !isOpen);
 }
 function closeProductsDropdown() {
-  document.getElementById('products-dropdown').classList.remove('open');
-  document.getElementById('products-trigger').classList.remove('open');
+  const menu = document.getElementById('products-dropdown');
+  if (menu) menu.classList.remove('open');
+  const trigger = document.getElementById('products-trigger');
+  if (trigger) trigger.classList.remove('open');
 }
 function selectProduct(val, label) {
   selectedProduct = val;
@@ -1520,7 +1531,9 @@ function selectProduct(val, label) {
 
 // Close dropdown when clicking outside
 document.addEventListener('click', e => {
-  if(!document.getElementById('products-field')?.contains(e.target)) closeProductsDropdown();
+  const field = document.getElementById('products-field');
+  const menu = document.getElementById('products-dropdown');
+  if (!field?.contains(e.target) && !menu?.contains(e.target)) closeProductsDropdown();
 });
 
 // ── Drawer section toggle ──
