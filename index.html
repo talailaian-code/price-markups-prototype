@@ -188,6 +188,74 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
 .rule-change-table tr:last-child td{border-bottom:none}
 .changed{background:#FEF3C7;font-weight:600}
 
+/* ── PROGRESS TRACKER ── */
+.progress-track{padding:28px 40px 24px;border-bottom:1px solid var(--border);background:white}
+.progress-steps{display:flex;align-items:flex-start;position:relative}
+.progress-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.progress-step:not(:last-child)::after{content:'';position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--border);z-index:0}
+.progress-step.done:not(:last-child)::after{background:var(--green-mid)}
+.progress-node{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0}
+.progress-node.done{background:var(--green-mid);border:2px solid var(--green-mid)}
+.progress-node.active{background:white;border:2px solid var(--green-mid)}
+.progress-node.upcoming{background:white;border:2px solid var(--border-2)}
+.progress-node.done svg{display:block}
+.progress-node.active svg{display:none}
+.progress-node.upcoming svg{display:none}
+.progress-node.active::after{content:'';width:8px;height:8px;background:var(--green-mid);border-radius:50%;position:absolute}
+.progress-label{margin-top:8px;text-align:center;max-width:110px}
+.progress-label__title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.progress-label__title.upcoming{font-weight:400;color:var(--text-2)}
+.progress-label__who{font-size:12px;color:var(--text-2);margin-top:2px}
+.progress-label__date{font-size:11px;color:var(--text-3);margin-top:1px}
+.progress-status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#1D4ED8;font-size:11px;font-weight:600;margin-top:4px}
+.progress-status-badge svg{width:8px;height:8px;fill:#1D4ED8}
+
+/* ── RULE DETAILS CARD ── */
+.rdc{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.rdc-cols{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.rdc-col{padding:16px 20px;min-width:0}
+.rdc-col+.rdc-col{border-left:1px solid var(--border)}
+.rdc-col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.rdc-col-label{font-size:16px;font-weight:700;color:var(--text)}
+.rdc-rule-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.rdc-rule-name.changed{color:#23BF90;background:none;font-weight:700}
+.rdc-fields{display:grid;grid-template-columns:auto 1fr;gap:3px 16px;font-size:12px}
+.rdc-field-label{color:var(--text-2)}
+.rdc-field-val{color:var(--text);font-weight:400}
+.rdc-none{font-size:14px;color:var(--text-2)}
+.rdc-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ic-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--green-xlight);border:1px solid #B2DFDB;font-size:12px;font-weight:600;color:var(--green-mid)}
+.ic-pill svg{width:12px;height:12px;color:var(--green-mid);flex-shrink:0}
+.marker-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.marker-new{background:var(--green-mid);color:white}
+.marker-edited{background:#FEF3C7;color:#92400E}
+.marker-removed{background:#FEE2E2;color:#991B1B}
+
+/* ── SECTION TITLE ROW ── */
+.sec-title-row{margin-bottom:6px}
+.sec-title{font-size:18px;font-weight:700;color:var(--text)}
+.sec-desc{font-size:13px;color:var(--text-2);margin-top:4px;line-height:1.5;max-width:680px}
+.sec-divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ── ALERT INFO ── */
+.alert-info{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--radius);background:#FFFBEB;border:1px solid #FDE68A;font-size:13px;font-weight:600;color:#92400E;margin-bottom:16px}
+.alert-info svg{flex-shrink:0;margin-top:1px;color:#D97706}
+
+/* ── RULE RULE-ROW (expanded view) ── */
+.rule-row{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.rule-row-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#FAFAFA;border-bottom:1px solid var(--border)}
+.rule-row-body{padding:14px 16px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}
+.rule-row-title{font-size:15px;font-weight:700;color:var(--text)}
+.rule-row-link{font-size:12px;font-weight:600;color:var(--green-mid);margin-left:auto;text-decoration:none;cursor:pointer}
+.rule-row-link:hover{text-decoration:underline}
+
+/* ── SAMPLE PRICE TABLE ── */
+.store-header{margin-bottom:12px}
+.store-name{font-size:16px;font-weight:700;color:var(--text)}
+.store-loc{font-size:13px;color:var(--border-2);margin-top:2px}
+.price-new-up{color:var(--green-mid);font-weight:700}
+.price-prev{color:var(--text-2)}
+
 /* ── DRAWER ── */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:400;display:none;animation:overlayIn .2s ease}
 .drawer-overlay.open{display:block}
@@ -512,6 +580,8 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
          SCREEN: REVIEW CHANGE REQUEST (detail)
     ════════════════════════════════════════════════ -->
     <div class="screen" id="screen-review-request">
+
+      <!-- Page header -->
       <div class="detail-header">
         <div>
           <button class="detail-back" onclick="nav('change-requests')">
@@ -520,9 +590,9 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
           </button>
           <div class="detail-title-row">
             <h1 class="detail-title" id="review-title">First project</h1>
-            <span class="badge badge-pending"><span class="badge-dot"></span>Inactive</span>
+            <span class="badge badge-review"><span class="badge-dot"></span>Account review</span>
           </div>
-          <div class="detail-meta" id="review-meta">Reviewed/Rejected by Tala Ilaian · Edited by Tala Ilaian on 03/08/2026</div>
+          <div class="detail-meta" id="review-meta">Submitted by Tala Ilaian · March 5, 2026</div>
         </div>
         <div class="detail-actions">
           <button class="btn btn-secondary" id="review-reject-btn" onclick="rejectRequest()">Reject change request</button>
@@ -532,41 +602,241 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
 
       <div id="review-notif" style="display:none"></div>
 
-      <div class="detail-content">
-        <a href="#" style="font-size:13px;color:var(--green-mid);font-weight:600;text-decoration:none" onclick="return false">View test results ↗</a>
+      <!-- Progress tracker -->
+      <div class="progress-track">
+        <div class="progress-steps">
 
-        <div class="detail-section" style="margin-top:20px">
-          <table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
-            <thead><tr>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Rule name <span class="sort-icon">↕</span></th>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Status</th>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Stores</th>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Membership</th>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Products</th>
-              <th style="background:#FAFAFA;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Rule %</th>
-            </tr></thead>
-            <tbody>
-              <tr onclick="openDrawer('Rule A','All stores','All','All','3%','None','0%','8%','$0','$8')" style="cursor:pointer">
-                <td style="padding:11px 12px"><button class="btn-ghost">Rule A</button> <span class="tag-pill tag-pill-new">New rule</span></td>
-                <td style="padding:11px 12px"><span class="badge badge-new"><span class="badge-dot"></span>New rule</span></td>
-                <td style="padding:11px 12px">All stores</td>
-                <td style="padding:11px 12px">All</td>
-                <td style="padding:11px 12px">All</td>
-                <td style="padding:11px 12px">3%</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="pagination" style="padding:10px 0">
-            <div class="rows-per-page">Items per page <select class="input" style="height:28px;width:55px;font-size:12px"><option>15</option></select></div>
-            <div class="pagination-count">1 – 15 of 150 items per page</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-left:12px">
-              <button class="btn-icon" style="height:28px;width:28px">‹</button>
-              <input class="input" value="1" style="width:40px;height:28px;font-size:12px;text-align:center">
-              <span style="font-size:12px;color:var(--text-2)">of 10 pages</span>
-              <button class="btn-icon" style="height:28px;width:28px">›</button>
+          <!-- Step 1: Submitted (done) -->
+          <div class="progress-step done">
+            <div class="progress-node done">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="progress-label">
+              <div class="progress-label__title">Change request submitted</div>
+              <div class="progress-label__who">Tala Ilaian</div>
+              <div class="progress-label__date">March 5, 2026</div>
+            </div>
+          </div>
+
+          <!-- Step 2: Admin review (done) -->
+          <div class="progress-step done">
+            <div class="progress-node done">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="progress-label">
+              <div class="progress-label__title">Admin review</div>
+              <div class="progress-label__who">Tala Ilaian</div>
+              <div class="progress-label__date">March 5, 2026</div>
+            </div>
+          </div>
+
+          <!-- Step 3: Account review (active / in progress) -->
+          <div class="progress-step">
+            <div class="progress-node active"></div>
+            <div class="progress-label">
+              <div class="progress-label__title">Account review</div>
+              <div class="progress-label__who">Tala Ilaian</div>
+              <div class="progress-label__date">March 5, 2026</div>
+              <div class="progress-status-badge">
+                <svg viewBox="0 0 8 8"><circle cx="4" cy="4" r="3"/></svg>
+                In progress
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Partner review (upcoming) -->
+          <div class="progress-step">
+            <div class="progress-node upcoming"></div>
+            <div class="progress-label">
+              <div class="progress-label__title upcoming">Partner review</div>
+              <div class="progress-label__who">Tala Ilaian</div>
+              <div class="progress-label__date">March 5, 2026</div>
+            </div>
+          </div>
+
+          <!-- Step 5: Active (upcoming) -->
+          <div class="progress-step">
+            <div class="progress-node upcoming"></div>
+            <div class="progress-label">
+              <div class="progress-label__title upcoming">Active</div>
+              <div class="progress-label__who">Tala Ilaian</div>
+              <div class="progress-label__date">March 5, 2026</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Body content -->
+      <div class="detail-content">
+
+        <!-- ── Rule details section ── -->
+        <div class="sec-title-row">
+          <div class="sec-title">Rule details</div>
+          <div class="sec-desc">Modify the list of rules by adding, editing, or deleting. These rules will be tested on your current prices after submission and will not be effective until approval.</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:12px">Added (1)</div>
+
+        <!-- Rule card: Before / After -->
+        <div class="rdc">
+          <div class="rdc-cols">
+            <!-- Before -->
+            <div class="rdc-col">
+              <div class="rdc-col-head">
+                <span class="rdc-col-label">Before</span>
+              </div>
+              <div class="rdc-rule-name">[Rule name]</div>
+              <div class="rdc-fields">
+                <span class="rdc-field-label">Stores</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Membership</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Products</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Target price adjustment</span><span class="rdc-field-val">3.75%</span>
+                <span class="rdc-field-label">Price tier between</span><span class="rdc-field-val">$2–$8</span>
+              </div>
+            </div>
+            <!-- After -->
+            <div class="rdc-col">
+              <div class="rdc-col-head">
+                <span class="rdc-col-label">After</span>
+                <span class="marker-badge marker-edited">Edited rule</span>
+              </div>
+              <div class="rdc-rule-name changed">[Rule name]</div>
+              <div class="rdc-fields">
+                <span class="rdc-field-label">Stores</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Membership</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Products</span><span class="rdc-field-val">All</span>
+                <span class="rdc-field-label">Target price adjustment</span><span class="rdc-field-val">3.75%</span>
+                <span class="rdc-field-label">Price tier between</span><span class="rdc-field-val">$2–$8</span>
+              </div>
+              <div class="rdc-pills">
+                <span class="ic-pill">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6" r="3"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-linecap="round"/></svg>
+                  Account
+                </span>
+                <span class="ic-pill">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 9,10 13,4"/></svg>
+                  Purchase frequency
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Alert banner -->
+        <div class="alert-info">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          Markups won't apply to alcohol products in CA, OH, and IL.
+        </div>
+
+        <!-- Rule: Premium Products Pricing -->
+        <div class="rule-row">
+          <div class="rule-row-header">
+            <span class="ic-pill" style="padding:2px 8px">
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+              New
+            </span>
+            <span class="rule-row-title">Premium Products Pricing</span>
+            <a class="rule-row-link" onclick="return false">View details</a>
+          </div>
+          <div class="rule-row-body">
+            <div class="rdc-fields" style="font-size:13px">
+              <span class="rdc-field-label">Stores</span><span class="rdc-field-val">All stores</span>
+              <span class="rdc-field-label">Membership</span><span class="rdc-field-val">All memberships</span>
+              <span class="rdc-field-label">Products</span><span class="rdc-field-val">All products</span>
+              <span class="rdc-field-label">Target price adjustment</span><span class="rdc-field-val">3.75%</span>
+              <span class="rdc-field-label">Price tier between</span><span class="rdc-field-val">$2–$8</span>
+            </div>
+            <div class="rdc-pills" style="align-self:flex-end">
+              <span class="ic-pill">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6" r="3"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-linecap="round"/></svg>
+                Account
+              </span>
+              <span class="ic-pill">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 9,10 13,4"/></svg>
+                Purchase frequency
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-divider"></div>
+
+        <!-- ── Sample price changes ── -->
+        <div class="sec-title-row" style="margin-bottom:16px">
+          <div class="sec-title">Sample price changes</div>
+          <div class="sec-desc">A preview of how the markup rule will affect current store prices. These are estimates based on today's catalog prices and will be finalized upon approval.</div>
+        </div>
+
+        <!-- Store header -->
+        <div class="store-header">
+          <div class="store-name">Market Street Store #4521</div>
+          <div class="store-loc">San Francisco, CA</div>
+        </div>
+
+        <!-- Price changes table -->
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:32px">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="background:#FAFAFA">
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">ID</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Channel</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Product ID</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:left">Store ID</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:right">Catalog price</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:right">Previous price</th>
+                <th style="padding:9px 14px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);text-align:right">New price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">1001</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2">Delivery</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">PRD-84421</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">STR-4521</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$1.99</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-prev">$2.19</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-new-up">$1.99</td>
+              </tr>
+              <tr>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">1002</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2">Pickup</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">PRD-91103</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">STR-4521</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$1.59</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-prev">$1.99</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$1.99</td>
+              </tr>
+              <tr>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">1003</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2">Delivery</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">PRD-30872</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">STR-4521</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$2.49</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-prev">$2.99</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$2.99</td>
+              </tr>
+              <tr>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">1004</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2">Delivery</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">PRD-55249</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;color:var(--text-2)">STR-4521</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right">$1.99</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-prev">$2.99</td>
+                <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #F0F1F2;text-align:right" class="price-new-up">$2.49</td>
+              </tr>
+              <tr>
+                <td style="padding:11px 14px;font-size:13px;color:var(--text-2)">1005</td>
+                <td style="padding:11px 14px;font-size:13px">Pickup</td>
+                <td style="padding:11px 14px;font-size:13px;color:var(--text-2)">PRD-67810</td>
+                <td style="padding:11px 14px;font-size:13px;color:var(--text-2)">STR-4521</td>
+                <td style="padding:11px 14px;font-size:13px;text-align:right">$1.99</td>
+                <td style="padding:11px 14px;font-size:13px;text-align:right" class="price-prev">$1.99</td>
+                <td style="padding:11px 14px;font-size:13px;text-align:right" class="price-new-up">$2.49</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
 
