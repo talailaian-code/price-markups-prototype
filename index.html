@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Price Markups — Instacart Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -32,7 +32,7 @@
   --nav-h:48px;
   --sidebar-w:200px;
 }
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'kern' 1,'liga' 1}
 
 /* ── TOP NAV ── */
 .top-nav{height:var(--nav-h);background:var(--green-dark);display:flex;align-items:center;padding:0 8px 0 16px;position:sticky;top:0;z-index:200;flex-shrink:0}
@@ -68,10 +68,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* ── PAGE HEADER ── */
 .page-header{padding:20px 32px 0;border-bottom:1px solid var(--border)}
 .page-header__top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.page-header__title{font-size:22px;font-weight:700;color:var(--text)}
+.page-header__title{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .page-header__actions{display:flex;gap:8px;align-items:center}
 .page-header__tabs{display:flex;gap:0}
-.page-header__tab{background:none;border:none;border-bottom:2px solid transparent;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;margin-bottom:-1px;transition:color .15s}
+.page-header__tab{background:none;border:none;border-bottom:2px solid transparent;padding:8px 12px;font-family:inherit;font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer;margin-bottom:-1px;transition:color .15s}
 .page-header__tab:hover{color:var(--text)}
 .page-header__tab.active{color:var(--green-mid);border-bottom-color:var(--green-mid)}
 
@@ -81,8 +81,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* ── TABLE ── */
 .table-wrap{padding:0 32px 32px;overflow-x:auto}
 table{width:100%;border-collapse:collapse;margin-top:0}
-th{text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap;background:#FAFAFA}
-td{padding:12px 12px;border-bottom:1px solid #F0F1F2;vertical-align:middle}
+th{text-align:left;padding:9px 12px;font-size:12px;font-weight:500;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap;background:#FAFAFA;letter-spacing:.01em}
+td{padding:11px 12px;border-bottom:1px solid #F0F1F2;vertical-align:middle;font-size:13px}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--green-xlight);cursor:pointer}
 .sort-icon{display:inline-flex;vertical-align:middle;margin-left:3px;opacity:.5}
@@ -270,10 +270,11 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
   </a>
   <div class="top-nav__tabs">
     <button class="top-nav__tab">Analytics</button>
-    <button class="top-nav__tab">Catalog</button>
-    <button class="top-nav__tab active">Merchandising</button>
+    <button class="top-nav__tab active">Catalog</button>
+    <button class="top-nav__tab">Merchandising</button>
     <button class="top-nav__tab">Marketing</button>
     <button class="top-nav__tab">Operations</button>
+    <button class="top-nav__tab">Developer</button>
   </div>
   <div class="top-nav__right">
     <button class="top-nav__icon" aria-label="Search">
@@ -291,16 +292,17 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar__section-header">
-      <svg class="sidebar__section-icon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span class="sidebar__section-title">Merchandising</span>
+      <svg class="sidebar__section-icon" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="sidebar__section-title">Catalog</span>
     </div>
-    <div class="sidebar__group-label">Promotions</div>
-    <button class="sidebar__item" onclick="nav('active-rules')">Campaigns &amp; offers</button>
-    <button class="sidebar__item" onclick="nav('active-rules')">Segments</button>
-    <button class="sidebar__item" onclick="nav('active-rules')">Promotional banners</button>
-    <button class="sidebar__item" onclick="nav('active-rules')">Creatives</button>
-    <button class="sidebar__item" onclick="nav('active-rules')">Slot manager</button>
-    <div class="sidebar__group-label">Pricing</div>
+    <button class="sidebar__item" onclick="nav('active-rules')">Product search</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Request new product</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Image uploads</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Configurable products</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Brand explorer</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Inventory files</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Missing codes</button>
+    <button class="sidebar__item" onclick="nav('active-rules')">Missing prices</button>
     <button class="sidebar__item active" id="sb-price-markups" onclick="nav('active-rules')">Price markups</button>
   </aside>
 
@@ -315,9 +317,6 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
         <div class="page-header__top">
           <h1 class="page-header__title">Price markups</h1>
           <div class="page-header__actions">
-            <button class="btn-icon" title="More options">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
-            </button>
             <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
           </div>
         </div>
@@ -325,27 +324,57 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
           <button class="page-header__tab active" onclick="nav('active-rules')">Active rules</button>
           <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
           <button class="page-header__tab" onclick="nav('groups')">Groups</button>
-          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
         </div>
       </div>
-      <div class="toolbar">
-        <!-- column headers still show even with empty state -->
-      </div>
-      <div style="overflow-x:auto;padding:0 32px">
+      <div class="table-wrap" style="padding-top:8px">
         <table>
           <thead><tr>
-            <th>Rule name <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
+            <th>Rule name <span class="sort-icon"><svg width="9" height="9" viewBox="0 0 10 14" fill="none"><path d="M5 1v12M1 5l4-4 4 4M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
             <th>Storefront</th><th>Stores</th><th>Memberships</th><th>Products</th>
-            <th>Target markup <span class="sort-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></th>
-            <th>Actual mark</th>
+            <th>Target markup <span class="sort-icon"><svg width="9" height="9" viewBox="0 0 10 14" fill="none"><path d="M5 1v12M1 5l4-4 4 4M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
           </tr></thead>
+          <tbody>
+            <tr onclick="openDrawer('Rule C','All','All','All','3%','None','0%','5%','$0','$10')">
+              <td><button class="btn-ghost">Rule C</button></td>
+              <td>All</td><td>All</td><td>All</td><td>All</td>
+              <td>3.0%</td>
+            </tr>
+            <tr onclick="openDrawer('Rule A','Marketplace','All','Loyalty','All','3%','None','0%','5%','$0','$10')">
+              <td><button class="btn-ghost">Rule A</button></td>
+              <td>Marketplace</td><td>All</td><td>Loyalty</td><td>All</td>
+              <td>3.0%</td>
+            </tr>
+            <tr onclick="openDrawer('Flyer items','Storefront Pro','All','All','Flyer','0%','None','0%','0%','$0','$0')">
+              <td><button class="btn-ghost">Flyer items</button>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;color:var(--text-3);margin-left:3px"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+              </td>
+              <td>Storefront Pro</td><td>All</td><td>All</td><td>Flyer</td>
+              <td>0%</td>
+            </tr>
+            <tr onclick="openDrawer('Update KVI list','All','KVI Stores','Instacart+','KVI products','3.5%','None','0%','6%','$0','$15')">
+              <td><button class="btn-ghost">Update KVI list</button></td>
+              <td>All</td><td>KVI Stores</td><td>Instacart +</td><td>KVI products</td>
+              <td>3.5%</td>
+            </tr>
+            <tr onclick="openDrawer('Rule Z','All','All','All','All','3%','None','0%','5%','$0','$10')">
+              <td><button class="btn-ghost">Rule Z</button></td>
+              <td>All</td><td>All</td><td>All</td><td>All</td>
+              <td>3.0%</td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      <div class="empty">
-        <svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="14" width="40" height="30" rx="3" stroke="#343538" stroke-width="2"/><path d="M16 22h24M16 28h16M16 34h10" stroke="#343538" stroke-width="2" stroke-linecap="round"/></svg>
-        <div class="empty-title">No active markup rules to show</div>
-        <div class="empty-desc">Active markup rules will appear here after they've been approved by [Partner]. To add rules, create a change request.</div>
-        <button class="btn btn-secondary" onclick="nav('create-request')">Create change request</button>
+      <div class="pagination">
+        <div class="rows-per-page">Items per page
+          <select class="input" style="height:28px;width:55px;font-size:12px"><option>15</option><option>30</option><option>50</option></select>
+        </div>
+        <div class="pagination-count">1 – 15 of 150 items per page</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-left:12px">
+          <button class="btn-icon" style="height:28px;width:28px">‹</button>
+          <input class="input" value="1" style="width:40px;height:28px;font-size:12px;text-align:center">
+          <span style="font-size:12px;color:var(--text-2)">of 10 pages</span>
+          <button class="btn-icon" style="height:28px;width:28px">›</button>
+        </div>
       </div>
     </div>
 
@@ -367,7 +396,6 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
           <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
           <button class="page-header__tab active" onclick="nav('change-requests')">Change requests</button>
           <button class="page-header__tab" onclick="nav('groups')">Groups</button>
-          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
         </div>
       </div>
       <div class="toolbar">
@@ -448,27 +476,27 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
                 <td><button class="btn-ghost" onclick="openDrawer('Rule A','Store A','All','All','3%','None','0%','8%','$0','$8')">Rule A</button></td>
                 <td>Store A</td><td>All</td><td>All</td><td>3%</td><td>None</td>
                 <td class="rules-table__actions">
-                  <button class="btn-icon" title="Edit">✏️</button>
-                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
-                  <button class="btn-icon" title="Copy">📋</button>
+                  <button class="btn-icon" title="Edit"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.414 1.414 0 012 2L5 13H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M5 4V2.5a.5.5 0 01.5-.5h5a.5.5 0 01.5.5V4m2 0l-.75 9a1 1 0 01-1 .93H4.25a1 1 0 01-1-.93L2.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Duplicate"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3 11V3h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </td>
               </tr>
               <tr>
                 <td><button class="btn-ghost" onclick="openDrawer('Rule B','Instacart+','All','All','0%','$3–$6','0%','0%','$3','$6')">Rule B</button></td>
                 <td>Store B</td><td>Instacart +</td><td>All</td><td>0%</td><td>$3–$6</td>
                 <td class="rules-table__actions">
-                  <button class="btn-icon" title="Edit">✏️</button>
-                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
-                  <button class="btn-icon" title="Copy">📋</button>
+                  <button class="btn-icon" title="Edit"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.414 1.414 0 012 2L5 13H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M5 4V2.5a.5.5 0 01.5-.5h5a.5.5 0 01.5.5V4m2 0l-.75 9a1 1 0 01-1 .93H4.25a1 1 0 01-1-.93L2.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Duplicate"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3 11V3h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </td>
               </tr>
               <tr>
                 <td><button class="btn-ghost" onclick="openDrawer('Link 1','All','Loyalty','All','0%','None','0%','0%','$0','$0')">Link 1</button></td>
                 <td>All</td><td>Loyalty</td><td>All</td><td>0%</td><td>None</td>
                 <td class="rules-table__actions">
-                  <button class="btn-icon" title="Edit">✏️</button>
-                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)">🗑️</button>
-                  <button class="btn-icon" title="Copy">📋</button>
+                  <button class="btn-icon" title="Edit"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.414 1.414 0 012 2L5 13H2v-3L11.5 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Delete" onclick="deleteRule(this)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M5 4V2.5a.5.5 0 01.5-.5h5a.5.5 0 01.5.5V4m2 0l-.75 9a1 1 0 01-1 .93H4.25a1 1 0 01-1-.93L2.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="btn-icon" title="Duplicate"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3 11V3h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </td>
               </tr>
             </tbody>
@@ -606,7 +634,6 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
           <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
           <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
           <button class="page-header__tab active" onclick="nav('groups')">Groups</button>
-          <button class="page-header__tab" onclick="nav('analytics')">Analytics</button>
         </div>
       </div>
       <div style="padding:24px 32px;display:flex;flex-direction:column;gap:32px">
@@ -654,27 +681,6 @@ select.input{cursor:pointer;padding-right:28px;appearance:none;background-image:
     <!-- ══════════════════════════════════════════════
          SCREEN: ANALYTICS (placeholder)
     ════════════════════════════════════════════════ -->
-    <div class="screen" id="screen-analytics">
-      <div class="page-header">
-        <div class="page-header__top">
-          <h1 class="page-header__title">Price markups</h1>
-          <div class="page-header__actions">
-            <button class="btn btn-primary" onclick="nav('create-request')">Create change request</button>
-          </div>
-        </div>
-        <div class="page-header__tabs">
-          <button class="page-header__tab" onclick="nav('active-rules')">Active rules</button>
-          <button class="page-header__tab" onclick="nav('change-requests')">Change requests</button>
-          <button class="page-header__tab" onclick="nav('groups')">Groups</button>
-          <button class="page-header__tab active" onclick="nav('analytics')">Analytics</button>
-        </div>
-      </div>
-      <div class="empty" style="padding:80px">
-        <svg class="empty-icon" viewBox="0 0 56 56" fill="none"><rect x="8" y="30" width="8" height="16" rx="1" stroke="#343538" stroke-width="2"/><rect x="24" y="20" width="8" height="26" rx="1" stroke="#343538" stroke-width="2"/><rect x="40" y="12" width="8" height="34" rx="1" stroke="#343538" stroke-width="2"/></svg>
-        <div class="empty-title">Analytics coming soon</div>
-        <div class="empty-desc">Analytics data will appear here once markup rules are active.</div>
-      </div>
-    </div>
 
   </main><!-- /main -->
 </div><!-- /layout -->
@@ -786,7 +792,7 @@ function nav(screen) {
   closeAllMenus();
   window.scrollTo(0,0);
   // Sync sidebar active state
-  if(['active-rules','change-requests','groups','analytics'].includes(screen)){
+  if(['active-rules','change-requests','groups'].includes(screen)){
     document.getElementById('sb-price-markups').classList.add('active');
   }
 }
